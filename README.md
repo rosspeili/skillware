@@ -54,18 +54,27 @@ Skillware/
 │       └── env.py              # Environment Management
 ├── skills/                     # Skill Registry (Domain-driven)
 │   └── finance/
-│       └── wallet_screening/ 
+│       └── wallet_screening/
 │           ├── skill.py        # Logic
 │           ├── manifest.yaml   # Metadata & Constitution
 │           ├── instructions.md # Cognitive Map
 │           ├── card.json       # UI Presentation
 │           ├── data/           # Integrated Knowledge Base
 │           └── maintenance/    # Maintenance Tools
+│   └── office/
+│       └── pdf_form_filler/
+│           ├── skill.py        # Logic
+│           ├── manifest.yaml   # Metadata
+│           ├── instructions.md # Cognitive Map
+│           ├── utils.py        # PDF Processing
+│           └── card.json       # UI Presentation
 ├── templates/                  # New Skill Templates
 │   └── python_skill/           # Standard Python Skill Template
 ├── examples/                   # Reference Implementations
 │   ├── gemini_wallet_check.py  # Google Gemini Integration
-│   └── claude_wallet_check.py  # Anthropic Claude Integration
+│   ├── claude_wallet_check.py  # Anthropic Claude Integration
+│   ├── gemini_pdf_form_filler.py
+│   └── claude_pdf_form_filler.py
 ├── docs/                       # Comprehensive Documentation
 │   ├── introduction.md         # Philosophy & Design
 │   ├── usage/                  # Integration Guides
