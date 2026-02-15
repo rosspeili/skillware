@@ -1,0 +1,11 @@
+requests
+pyyaml
+anthropic
+google-generativeai
+pymupdf
+
+[dev]
+pytest
+pytest-mock
+flake8
+black
