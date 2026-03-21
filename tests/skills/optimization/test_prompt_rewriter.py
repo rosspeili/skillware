@@ -1,4 +1,3 @@
-import pytest
 from skillware.core.loader import SkillLoader
 
 def get_skill():
