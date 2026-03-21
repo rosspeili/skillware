@@ -29,6 +29,16 @@ body:
       required: false
 
   - type: textarea
+    id: description
+    attributes:
+      label: Bug Description
+      description: What is the current bug behavior?
+      placeholder: |
+        When I do X, Y happens instead of Z.
+    validations:
+      required: true
+
+  - type: textarea
     id: reproduction
     attributes:
       label: Steps to Reproduce
