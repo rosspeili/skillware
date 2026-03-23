@@ -4,7 +4,7 @@
 
 If you want your agent to "know" how to analyze a balance sheet, you shouldn't have to prompt-engineer a specific model or write a custom tool definition for that specific model's API. You should be able to **install** that capability.
 
-## 🧠 The Triad: Mind, Body, Language
+## The Triad: Mind, Body, Language
 
 In integration, a "Skill" is not just a function. It is a living unit of capability composed of three parts:
 
@@ -28,9 +28,27 @@ In integration, a "Skill" is not just a function. It is a living unit of capabil
 
 ---
 
-## 🏗️ The Architecture: How It Works
+## The Architecture: How It Works
 
-When you run `SkillLoader.load_skill("finance/wallet_screening")`, a complex orchestration happens behind the scenes:
+Skillware relies on a strict, modular layout. Instead of hardcoding tools into your primary application, you maintain a structured registry of capabilities:
+
+```text
+Skillware/
+├── skills/
+│   └── category/                   # Domain boundary (e.g., 'finance')
+│       └── skill_name/             # A self-contained capability bundle
+│           ├── manifest.yaml       # Defines inputs, outputs, and safety constitution
+│           ├── skill.py            # The deterministic Python execution logic
+│           ├── instructions.md     # Natural language guidance for the LLM
+│           └── card.json           # Optional UI representation for the front-end
+└── skillware/
+    └── core/
+        ├── base_skill.py           # The interface every skill must implement
+        ├── env.py                  # API key and secret loading
+        └── loader.py               # The engine that bridges the skill to the LLM
+```
+
+When you run `SkillLoader.load_skill("category/skill_name")`, a complex orchestration happens behind the scenes:
 
 ### Step 1: Discovery & Loading
 The loader scans the `skills/` directory structure. It mimics Python's import system but looking for Skillware bundles (directories with `manifest.yaml`).
@@ -56,7 +74,7 @@ This "Context Injection" ensures the model isn't just *able* to call the tool, b
 
 ---
 
-## 🔄 The Execution Loop
+## The Execution Loop
 
 1.  **User Query**: "Is wallet 0x123 safe?"
 2.  **Model Cognition**: The LLM reads the injected `instructions.md` and realizes it should use the `wallet_screening` tool.
@@ -66,7 +84,7 @@ This "Context Injection" ensures the model isn't just *able* to call the tool, b
 6.  **Structured Output**: The Body returns a rich JSON object.
 7.  **Synthesis**: The LLM receives the JSON. Guided again by the `instructions.md` (which says "Summarize risk factors clearly"), it translates the data into a human-readable report.
 
-## 🎯 Model Agnosticism
+## Model Agnosticism
 
 Skillware is designed to be the "Standard Library" for all agents.
 
