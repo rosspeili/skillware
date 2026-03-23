@@ -6,8 +6,8 @@ Use the latest version of Skillware to ensure you have the latest security patch
 
 | Version | Supported |
 | ------- | --------- |
-| 1.0.x   | Yes       |
-| < 1.0   | No        |
+| 0.2.x   | Yes       |
+| < 0.1.0   | No        |
 
 ## Reporting a Vulnerability
 
