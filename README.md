@@ -47,26 +47,23 @@ This repository is organized into a core framework, a registry of skills, and do
 
 ```text
 Skillware/
+├── docs/                       # Comprehensive Documentation & Usage Guides
+├── examples/                   # Reference Implementations
+│   └── basic_agent.py          # Example showing SkillLoader integration
+├── skills/                     # Skill Registry
+│   └── category/               # Domain boundaries (e.g., finance)
+│       └── skill_name/         # The Skill bundle
+│           ├── manifest.yaml   # Definition, schema, and constitution
+│           ├── skill.py        # Executable Python logic
+│           └── instructions.md # Cognitive map for the LLM
 ├── skillware/                  # Core Framework Package
 │   └── core/
 │       ├── base_skill.py       # Abstract Base Class for skills
-│       ├── loader.py           # Universal Skill Loader & Model Adapter
-│       └── env.py              # Environment Management
-├── skills/                     # Skill Registry (Domain-driven)
-│   ├── category/               # e.g., finance, optimization, data_engineering
-│   │   └── skill_name/         # e.g., prompt_rewriter, wallet_screening
-├── templates/                  # New Skill Templates
-│   └── python_skill/           # Standard Python Skill Template
-├── examples/                   # Reference Implementations
-│   ├── gemini_wallet_check.py  # Google Gemini Integration
-│   ├── claude_wallet_check.py  # Anthropic Claude Integration
-│   ├── gemini_pdf_form_filler.py
-│   └── claude_pdf_form_filler.py
-├── docs/                       # Comprehensive Documentation
-│   ├── introduction.md         # Philosophy & Design
-│   ├── usage/                  # Integration Guides
-│   └── skills/                 # Skill Reference Cards
-└── COMPARISON.md               # Comparison vs. Anthropic Skills / MCP
+│       ├── env.py              # Environment Management
+│       └── loader.py           # Universal Skill Loader & Model Adapter
+├── templates/                  # Boilerplate templates for new skills
+│   └── python_skill/           # Standard template with required files
+└── tests/                      # Automated test suite
 ```
 
 ## Quick Start
@@ -136,7 +133,11 @@ print(response.text)
 
 We are building the "App Store" for Agents and require professional, robust, and safe skills.
 
-Please read **[CONTRIBUTING.md](CONTRIBUTING.md)** for guidelines on folder structure, manifest schemas, and safety constitutions.
+We actively encourage both humans and autonomous agents to contribute to this repository! 
+
+* Please read our **[Agent Code of Conduct](CODE_OF_CONDUCT.md)** which outlines our strict expectations for deterministic outputs, zero LLM code generation, and safety boundaries.
+* When submitting skills, our new **Agent-Friendly Pull Request Template** provides a checklist to ensure your logic aligns natively with `loader.py` and `base_skill.py`.
+* Please also review **[CONTRIBUTING.md](CONTRIBUTING.md)** for detailed guidelines on folder structure and schema definitions.
 
 ## Comparison
 
