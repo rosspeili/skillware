@@ -1,10 +1,11 @@
-import pytest
 from skillware.core.loader import SkillLoader
+
 
 def test_synthetic_generator_manifest():
     bundle = SkillLoader.load_skill("data_engineering/synthetic_generator")
     assert bundle["manifest"]["name"] == "data_engineering/synthetic_generator"
     assert "entropy_temperature" in bundle["manifest"]["parameters"]['properties']
+
 
 def test_entropy_score():
     bundle = SkillLoader.load_skill("data_engineering/synthetic_generator")
@@ -13,13 +14,15 @@ def test_entropy_score():
 
     # Highly repetitive, low entropy
     low_entropy_text = "test " * 100
-    score_low = skill._calculate_entropy_score(low_entropy_text)
+    # Ignoring protected member warnings for testing internal scoring
+    score_low = skill._calculate_entropy_score(low_entropy_text)  # noqa: W0212
 
     # More diverse, higher entropy
-    high_entropy_text = "The quick brown fox jumps over the lazy dog. Programming is fun! Diverse sentences."
-    score_high = skill._calculate_entropy_score(high_entropy_text)
+    high_text = "The brown fox jumps over the dog. Programming is fun!"
+    score_high = skill._calculate_entropy_score(high_text)  # noqa: W0212
 
     assert score_high > score_low
+
 
 def test_execute_success(mocker):
     bundle = SkillLoader.load_skill("data_engineering/synthetic_generator")
@@ -27,7 +30,7 @@ def test_execute_success(mocker):
 
     mock_json_response = '''```json
 [
-  {"instruction": "do this", "input": "input data", "output": "output data"}
+  {"instruction": "x", "input": "y", "output": "z"}
 ]
 ```'''
 
@@ -45,4 +48,4 @@ def test_execute_success(mocker):
     assert result["provider_used"] == "gemini"
     assert result["samples_generated"] == 1
     assert "samples" in result
-    assert result["samples"][0]["instruction"] == "do this"
+    assert result["samples"][0]["instruction"] == "x"
