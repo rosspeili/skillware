@@ -1,0 +1,19 @@
+{
+    "name": "MiCA Module",
+    "description": "Evaluate and screen crypto-asset queries against the MiCA regulation.",
+    "icon": "book-open",
+    "color": "#1F618D",
+    "ui_schema": {
+        "type": "card",
+        "fields": [
+            {
+                "key": "run_evaluator",
+                "label": "Enable Evaluator"
+            },
+            {
+                "key": "evaluator_model",
+                "label": "Evaluator Model"
+            }
+        ]
+    }
+}

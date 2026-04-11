@@ -1,4 +1,4 @@
-# 📚 Skill Library
+# Skill Library
 
 Welcome to the official catalog of Skillware capabilities.
 
@@ -37,10 +37,11 @@ Enforces privacy, guardrails, and secure handling of sensitive data before it re
 | Skill | ID | Description |
 | :--- | :--- | :--- |
 | **[PII Masker](pii_masker.md)** | `compliance/pii_masker` | High-precision, local PII (Personally Identifiable Information) detection and redaction using the micro-f1-mask model. |
+| **[MiCA Module](mica_module.md)** | `compliance/mica_module` | Self-contained local Policy Enforcement and RAG engine strictly adhering to MiCA crypto-asset regulation. |
 
 ---
 
-## 📥 Installing Skills
+## Installing Skills
 
 Skills are included in the `skillware/skills` directory. To use them:
 
