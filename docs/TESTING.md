@@ -59,9 +59,16 @@ Run the full test suite:
 python -m pytest tests/
 ```
 
+### Testing Individual Skills
+Every skill now comes with a `test_skill.py` boilerplate. You can run tests for a specific skill without running the entire suite:
+
+```bash
+python -m pytest skills/<category>/<skill_name>/test_skill.py
+```
+
 ### Writing Tests
-- Place tests in the `tests/` directory.
-- Mimic the structure of the `skills/` or `skillware/` directory you are testing.
+- **Global Tests**: Place core framework tests in the `tests/` directory.
+- **Skill Tests**: Place skill-specific logic tests in a `test_skill.py` file within the skill's own directory.
 - Use `conftest.py` for shared fixtures (e.g., mocking LLM clients).
 
 ## Pre-Commit Checklist
@@ -70,4 +77,5 @@ Before pushing your code, run the following commands to ensure your changes are 
 
 1. `python -m black .` (Format code)
 2. `python -m flake8 .` (Check quality)
-3. `python -m pytest tests/` (Verify functionality)
+3. `python -m pytest tests/` (Verify framework functionality)
+4. `python -m pytest skills/` (Verify all skills pass their local tests)
