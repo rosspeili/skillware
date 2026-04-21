@@ -55,7 +55,8 @@ Skillware/
 │       └── skill_name/         # The Skill bundle
 │           ├── manifest.yaml   # Definition, schema, and constitution
 │           ├── skill.py        # Executable Python logic
-│           └── instructions.md # Cognitive map for the LLM
+│           ├── instructions.md # Cognitive map for the LLM
+│           └── test_skill.py   # Unit tests & schema validation
 ├── skillware/                  # Core Framework Package
 │   └── core/
 │       ├── base_skill.py       # Abstract Base Class for skills
