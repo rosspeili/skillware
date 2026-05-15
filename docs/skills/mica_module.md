@@ -86,3 +86,9 @@ The skill returns a strictly formatted JSON context block that Parent Agents inc
   "final_context_for_agent": "Output the revised answer integrating the following requirement: [White paper publication under Article 16]."
 }
 ```
+
+---
+
+## ⚖️ Enterprise Disclaimer
+
+This skill is provided for demonstration and integration purposes. It is intended as a starting point that you can adapt to your own data, schemas, and operational requirements. For an enterprise-grade version of this skill with dedicated support, SLAs, and customization, contact skills@arpacorp.net.
