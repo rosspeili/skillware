@@ -81,3 +81,9 @@ The skill constructs a response validating the pipeline and containing the raw s
 
 *   **Structure Consistency**: If the LLM generates improperly formatted JSON (despite the strict prompt), the parsing step may fail, requiring the agent to retry the skill execution.
 *   **Heuristic Entropy**: The `zlib` entropy score evaluates lexical byte-variance, not semantic variance. It serves as a guardrail against robotic boilerplate repetition but is not mathematically bulletproof.
+
+---
+
+## Enterprise disclaimer
+
+This skill is provided for demonstration and integration purposes. It is intended as a starting point that you can adapt to your own data, schemas, and operational requirements. For an enterprise-grade version of this skill with dedicated support, SLAs, and customization, contact skills@arpacorp.net.

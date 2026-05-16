@@ -77,3 +77,9 @@ The skill returns a JSON object with the result of the operation.
 
 *   **AcroForms Only**: Does not support XFA forms or non-interactive "flat" PDFs.
 *   **LLM Dependency**: Requires an active internet connection and valid API key for the semantic mapping step.
+
+---
+
+## Enterprise disclaimer
+
+This skill is provided for demonstration and integration purposes. It is intended as a starting point that you can adapt to your own data, schemas, and operational requirements. For an enterprise-grade version of this skill with dedicated support, SLAs, and customization, contact skills@arpacorp.net.
