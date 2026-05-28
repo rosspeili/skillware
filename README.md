@@ -19,9 +19,9 @@
   <a href="#architecture">Architecture</a> •
   <a href="#quick-start">Quick Start</a> •
   <a href="#documentation">Documentation</a> •
-  <a href="CHANGELOG.md">Changelog</a> •
   <a href="#contributing">Contributing</a> •
   <a href="#comparison">Comparison</a> •
+  <a href="CHANGELOG.md">Changelog</a> •
   <a href="#contact">Contact</a>
 </div>
 
@@ -33,18 +33,18 @@
 
 ## Mission
 
-The AI ecosystem is fragmented. Developers often re-invent tool definitions, system prompts, and safety rules for every project. **Skillware** supplies a standard to package capabilities into self-contained units that work across **Gemini**, **Claude**, **Ollama**, **GPT**, and **Llama**.
+The AI ecosystem is fragmented. Developers often re-invent tool definitions, system prompts, and safety rules for every project. **Skillware** supplies a standard to package capabilities into self-contained, installable units that work across **Gemini**, **Claude**, **Ollama**, **GPT**, and **Llama**. For the full story and roadmap, see our **[Vision](docs/vision.md)**.
 
 A **Skill** in this framework provides everything an Agent needs to master a domain:
 
-1.  **Logic**: Executable Python code.
-2.  **Cognition**: System instructions and "cognitive maps".
-3.  **Governance**: Constitution and safety boundaries.
-4.  **Interface**: Standardized schemas for LLM tool calling.
+1. **Logic**: Executable Python so agents run real work, not guess it.
+2. **Cognition**: System instructions and cognitive maps so any logical system uses the capability as intended.
+3. **Governance**: Constitution, safety boundaries, and hard limits baked into the bundle.
+4. **Interface**: Standardized tool schemas for any LLM or agent runtime.
 
 ### Skill library
 
-Browse capabilities by category in the [Skill library](docs/skills/README.md).
+Browse capabilities by category in the [Skill library](docs/skills/README.md) or on our <a href="https://skillware.site/skills" target="_blank" rel="noopener noreferrer">site&nbsp;↗</a>.
 
 ## Architecture
 
@@ -176,30 +176,23 @@ For other providers and shared integration patterns, see the [usage guides index
 
 ## Documentation
 
-| Topic | Link |
+| Topic | Links |
 | :--- | :--- |
-| Introduction | [docs/introduction.md](docs/introduction.md) |
-| Changelog | [CHANGELOG.md](CHANGELOG.md) |
-| Testing | [docs/TESTING.md](docs/TESTING.md) |
-| Skill library | [docs/skills/README.md](docs/skills/README.md) |
-| Usage guides | [index](docs/usage/README.md) — [Gemini](docs/usage/gemini.md) · [Claude](docs/usage/claude.md) · [OpenAI](docs/usage/openai.md) · [DeepSeek](docs/usage/deepseek.md) · [Ollama](docs/usage/ollama.md); [agent loops](docs/usage/agent_loops.md); [API keys](docs/usage/api_keys.md) |
-| Examples index | [examples/README.md](examples/README.md) |
-| CLI | [docs/usage/cli.md](docs/usage/cli.md) |
-| Contributing | [CONTRIBUTING.md](CONTRIBUTING.md) · [agent workflow](docs/contributing/ai_native_workflow.md) |
+| **Introduction** | [Introduction](docs/introduction.md) · [Vision](docs/vision.md) · [Comparison](COMPARISON.md) |
+| **Usage guides** | [Skill Library](docs/skills/README.md) · [Usage Guide](docs/usage/README.md) · [Examples](examples/README.md) · [Agent Loops](docs/usage/agent_loops.md) · [API Keys](docs/usage/api_keys.md) · [CLI](docs/usage/cli.md) |
+| **Contributing** | [Contributing](CONTRIBUTING.md) · [Agent Native Workflow](docs/contributing/ai_native_workflow.md) · [Testing](docs/TESTING.md) · [Changelog](CHANGELOG.md) |
 
 ## Contributing
 
-We are building the "App Store" for Agents and require professional, robust, and safe skills. We welcome contributions to the skill registry, documentation, tests, and core framework.
+We are building the "App Store" for Agents. Skills are the main contribution, but documentation, tests, and framework fixes are welcome too. Human operators and supervised agents follow the same standards: scoped PRs, deterministic behavior, and verified tests.
 
-* **[CONTRIBUTING.md](CONTRIBUTING.md)** — Contribution types, skill standard, pull request process, and navigation to all contributor docs.
-* **[Agent Contribution Workflow](docs/contributing/ai_native_workflow.md)** — Workflow for AI agents contributing to the repository (operators supervise).
-* **[Agent Code of Conduct](CODE_OF_CONDUCT.md)** — Deterministic outputs, safety boundaries, and acceptable use of skills.
-* **[TESTING.md](docs/TESTING.md)** — Local linting and pytest before you open a PR.
-* **[Pull request template](.github/PULL_REQUEST_TEMPLATE.md)** — Checklists for skills, docs, and framework changes (complete only the sections that apply).
+See the **Contributing** row in [Documentation](#documentation) for the full path, [Contributing](CONTRIBUTING.md) (types, skill standard, PR process), [Agent Native Workflow](docs/contributing/ai_native_workflow.md) (for autonomous and semi-autonomous agents), [Testing](docs/TESTING.md) (Black, Flake8, framework and skill pytest, pre-PR checklist), and [Changelog](CHANGELOG.md) (user-facing entries under `[Unreleased]`).
+
+Also read the [Agent Code of Conduct](CODE_OF_CONDUCT.md). Open PRs with the [pull request template](.github/PULL_REQUEST_TEMPLATE.md) and complete only the sections that apply.
 
 ## Comparison
 
-Skillware differs from the Model Context Protocol (MCP) or Anthropic's Skills repository in the following ways:
+Skillware differs from the Model Context Protocol (MCP), and Anthropic's Skills repository in several ways:
 
 *   **Model Agnostic**: Native adapters for Gemini, Claude, Ollama, and OpenAI.
 *   **Code-First**: Skills are executable Python packages, not just server specs.
@@ -212,7 +205,11 @@ Skillware differs from the Model Context Protocol (MCP) or Anthropic's Skills re
 For questions, suggestions, or contributions, please open an issue or reach out to us:
 
 *   **Email**: [skillware-os@arpacorp.net](mailto:skillware-os@arpacorp.net)
+*   **Enterprise**: [skills@arpacorp.net](mailto:skills@arpacorp.net) — enterprise skills, chaining, and forward deployed engineering
+*   **Security**: [security@arpacorp.net](mailto:security@arpacorp.net) — report bugs, vulnerabilities, or other sensitive issues (see [SECURITY.md](SECURITY.md))
 *   **Issues**: [GitHub Issues](https://github.com/arpahls/skillware/issues)
+
+For skill-specific questions or reaching a skill's maintainer, check issuer and author details on the skill card, in the repo [Skill Library](docs/skills/README.md), or on our website's <a href="https://skillware.site/skills" target="_blank" rel="noopener noreferrer">skills catalog&nbsp;↗</a>.
 
 ---
 
