@@ -3,8 +3,15 @@ import yaml
 from pathlib import Path
 from typing import List, Dict, Any, Optional
 
+from rich.table import Table
+from rich.console import Console
+from rich.text import Text
+from rich import box
+
+import importlib.metadata
+
 from skillware.core.loader import SkillLoader
-from skillware.version_policy import emit_upgrade_advisory
+from skillware.version_policy import emit_upgrade_advisory, get_installed_version
 
 TABLE_STYLE = "bold #C7CEEA"  # lavender  - headers
 CATEGORY_STYLE = "bold #FFDAC1"  # peach     - category column
@@ -106,15 +113,6 @@ def cmd_list(
     console=None,
 ) -> None:
     """Print a formatted table of all available skills."""
-    try:
-        from rich.table import Table
-        from rich.console import Console
-        from rich import box
-    except ImportError:
-        raise SystemExit(
-            "rich is required for the CLI. Install it with: pip install 'skillware[cli]'"
-        )
-
     if console is None:
         console = Console()
 
@@ -164,18 +162,45 @@ def _print_menu(console, menu) -> None:
     console.print()
 
 
+def cmd_help(console=None) -> None:
+    """Print rich-formatted help to the console."""
+    if console is None:
+        console = Console()
+
+    console.print(Text("Usage", style=f"bold {TABLE_STYLE}"))
+    console.print("  skillware                     — open interactive menu")
+    console.print("  skillware list                — list all installed skills")
+    console.print("  skillware list --category <n> — filter by category")
+    console.print("  skillware list --issuer <h>   — filter by issuer")
+    console.print("  skillware list --skills-root  — override skills directory")
+    console.print("  skillware --version           — print installed version")
+    console.print()
+
+    console.print(Text("Commands", style=f"bold {TABLE_STYLE}"))
+    console.print("  list      available now", style=ID_STYLE)
+    console.print("  paths     coming in #81", style="dim")
+    console.print("  test      coming in #83", style="dim")
+    console.print()
+
+    console.print(Text("Examples", style=f"bold {TABLE_STYLE}"))
+    console.print("  skillware list --category compliance", style=MENU_STYLE)
+    console.print("  skillware list --issuer rosspeili", style=MENU_STYLE)
+    console.print("  skillware list --skills-root /path/to/skills", style=MENU_STYLE)
+    console.print()
+
+    console.print(Text("Install", style=f"bold {TABLE_STYLE}"))
+    console.print("  pip install skillware", style="dim")
+    console.print()
+
+    console.print(Text("Docs", style=f"bold {TABLE_STYLE}"))
+    console.print(
+        "  https://github.com/arpahls/skillware/blob/main/docs/usage/cli.md",
+        style=f"dim {SPLASH_STYLE}",
+    )
+
+
 def cmd_interactive(console=None, parser=None) -> None:
     """Launch ASCII splash screen and interactive menu."""
-    try:
-        from rich.console import Console
-        from rich.text import Text
-    except ImportError:
-        raise SystemExit(
-            "rich is required for the CLI. Install it with: pip install 'skillware[cli]'"
-        )
-
-    import importlib.metadata
-
     if console is None:
         console = Console()
 
@@ -248,12 +273,7 @@ def cmd_interactive(console=None, parser=None) -> None:
                 style="dim",
             )
         elif command == "help":
-            if parser:
-                parser.print_help()
-            else:
-                console.print(
-                    "  Run 'skillware --help' for usage information.", style="dim"
-                )
+            cmd_help(console=console)
         else:
             console.print(f"  Unknown command: '{choice}'", style="dim #FF9AA2")
 
@@ -266,6 +286,17 @@ def main() -> None:
     emit_upgrade_advisory()
 
     parser = argparse.ArgumentParser(prog="skillware")
+
+    _ver = get_installed_version()
+    _version_str = str(_ver) if _ver else "dev"
+
+    parser.add_argument(
+        "--version",
+        "-V",
+        action="version",
+        version=f"skillware {_version_str}",
+    )
+
     subparsers = parser.add_subparsers(dest="command")
 
     list_parser = subparsers.add_parser("list", help="List all available skills.")

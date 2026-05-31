@@ -3,6 +3,7 @@ from skillware.cli import (
     cmd_list,
     cmd_interactive,
     _short_description,
+    cmd_help,
 )
 
 
@@ -219,3 +220,43 @@ def test_cmd_interactive_list_dispatch(tmp_path, monkeypatch):
 
     output = buf.getvalue()
     assert "test_skill" in output
+
+
+def test_main_module_invocation():
+    """python -m skillware should be importable and callable."""
+    import skillware.__main__  # noqa: F401 — just verify it imports cleanly
+    from skillware.__main__ import main
+
+    assert callable(main)
+
+
+def test_cmd_help_includes_list_examples(capsys):
+    """cmd_help should include category and issuer examples."""
+    import io
+    from rich.console import Console
+
+    buf = io.StringIO()
+    console = Console(file=buf, force_terminal=False)
+    cmd_help(console=console)
+
+    output = buf.getvalue()
+    assert "--category" in output
+    assert "--issuer" in output
+    assert "--skills-root" in output
+
+
+def test_interactive_help_dispatches_to_cmd_help(monkeypatch):
+    """Interactive menu option 4 / help should call cmd_help."""
+    import io
+    from rich.console import Console
+
+    responses = iter(["4", "q"])
+    monkeypatch.setattr("builtins.input", lambda _: next(responses))
+
+    buf = io.StringIO()
+    console = Console(file=buf, force_terminal=False)
+    cmd_interactive(console=console)
+
+    output = buf.getvalue()
+    assert "--category" in output
+    assert "--issuer" in output

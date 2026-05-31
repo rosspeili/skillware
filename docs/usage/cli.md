@@ -7,9 +7,42 @@ agent can load.
 
 ## Installation
 
-The CLI depends on `rich` for terminal output. Install it with the `cli` extra:
+Install Skillware — `rich` is included as a core dependency:
 
-    pip install "skillware[cli]"
+    pip install skillware
+
+## Running the CLI
+
+After installation, the `skillware` command is available directly:
+
+    skillware
+    skillware list
+    skillware --version
+
+If `skillware` is not recognized, Python's `Scripts` directory may not be on
+your PATH.
+
+**Unix** — verify with:
+
+    which skillware
+
+**Windows** — verify with:
+
+    where skillware
+
+If the command is not found, use the module fallback (works on any OS as long
+as Python is installed):
+
+    python -m skillware
+    python -m skillware list
+    python -m skillware list --category compliance
+    python -m skillware --help
+
+**Windows PATH fix** — add both `Python3x\` and `Python3x\Scripts\` to your
+system PATH, or use the `py` launcher:
+
+    py -3 -m pip install skillware
+    py -3 -m skillware list
 
 ## Version advisory
 
@@ -45,7 +78,7 @@ Available commands:
 | `1` / `list` | List all locally installed skills | Available |
 | `2` / `paths` | Show and repair skill directory resolution paths | Coming in #81 |
 | `3` / `test` | Run test_skill.py for one or all skills | Coming in #83 |
-| `4` / `help` | Print usage information | Available |
+| `4` / `help` | Print rich-formatted help with commands, flags, and examples | Available |
 
 ## Commands
 
