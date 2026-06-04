@@ -45,7 +45,9 @@ def demo_skill() -> Iterator[Any]:
     os.environ.setdefault("AGENT_WALLET_PRIVATE_KEY", test_key)
     os.environ.setdefault("BASE_RPC_URL", "http://localhost:8546")
 
-    skill_dir = os.path.join(os.path.dirname(__file__), "..", "skills", "defi", "evm_tx_handler")
+    skill_dir = os.path.join(
+        os.path.dirname(__file__), "..", "skills", "defi", "evm_tx_handler"
+    )
     if skill_dir not in sys.path:
         sys.path.insert(0, os.path.abspath(skill_dir))
     from abis import ROUTER_V2_ABI  # type: ignore[import-not-found]
@@ -54,7 +56,9 @@ def demo_skill() -> Iterator[Any]:
     w3.eth.gas_price = 10**9
     w3.eth.get_transaction_count.return_value = 0
     w3.eth.get_balance = MagicMock(return_value=10**20)
-    w3.to_wei.side_effect = lambda val, unit: int(val * 10**9) if unit == "gwei" else val
+    w3.to_wei.side_effect = lambda val, unit: (
+        int(val * 10**9) if unit == "gwei" else val
+    )
 
     router = MagicMock()
     router.functions.getAmountsIn.return_value.call.return_value = [

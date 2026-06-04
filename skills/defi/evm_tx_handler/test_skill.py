@@ -22,7 +22,9 @@ def _mock_w3_for_erc20_swap(*, allowance: int = 0, token_balance: int = 10**18):
     w3.eth.gas_price = 10**9
     w3.eth.get_transaction_count.return_value = 0
     w3.eth.get_balance = MagicMock(return_value=10**20)
-    w3.to_wei.side_effect = lambda val, unit: int(val * 10**9) if unit == "gwei" else val
+    w3.to_wei.side_effect = lambda val, unit: (
+        int(val * 10**9) if unit == "gwei" else val
+    )
 
     router = MagicMock()
     router.functions.getAmountsIn.return_value.call.return_value = [
@@ -87,7 +89,9 @@ def test_loader_loads_skill(monkeypatch):
     assert bundle["manifest"]["name"] == "evm_tx_handler"
     cls = bundle["module"].EvmTxHandlerSkill
     instance = cls()
-    assert instance.execute({"action": "wallet_info", "intent": {}})["status"] == "ready"
+    assert (
+        instance.execute({"action": "wallet_info", "intent": {}})["status"] == "ready"
+    )
 
 
 def test_resolve_missing_spend_asset(skill):
@@ -112,11 +116,16 @@ def test_resolve_missing_spend_asset(skill):
 def test_quote_buy(mock_web3, skill):
     w3 = MagicMock()
     w3.eth.gas_price = 10**9
-    w3.to_wei.side_effect = lambda val, unit: int(val * 10**9) if unit == "gwei" else val
+    w3.to_wei.side_effect = lambda val, unit: (
+        int(val * 10**9) if unit == "gwei" else val
+    )
     mock_web3.return_value = w3
 
     router = MagicMock()
-    router.functions.getAmountsIn.return_value.call.return_value = [100_000_000, 10_000_000_000_000_000_000]
+    router.functions.getAmountsIn.return_value.call.return_value = [
+        100_000_000,
+        10_000_000_000_000_000_000,
+    ]
     w3.eth.contract.return_value = router
 
     result = skill.execute(
@@ -143,7 +152,9 @@ def test_quote_buy(mock_web3, skill):
 def test_quote_sell(mock_web3, skill):
     w3 = MagicMock()
     w3.eth.gas_price = 10**9
-    w3.to_wei.side_effect = lambda val, unit: int(val * 10**9) if unit == "gwei" else val
+    w3.to_wei.side_effect = lambda val, unit: (
+        int(val * 10**9) if unit == "gwei" else val
+    )
     mock_web3.return_value = w3
 
     router = MagicMock()
@@ -171,7 +182,12 @@ def test_execute_needs_confirmation_when_enabled(skill):
     result = skill.execute(
         {
             "action": "execute",
-            "intent": {"side": "buy", "chain": "base", "target_asset": "degen", "spend_asset": "usdc"},
+            "intent": {
+                "side": "buy",
+                "chain": "base",
+                "target_asset": "degen",
+                "spend_asset": "usdc",
+            },
             "confirmed": False,
         }
     )
@@ -357,7 +373,9 @@ def test_transfer_resolves_addressbook(mock_web3, mock_send, mock_receipt, skill
     w3 = MagicMock()
     w3.eth.gas_price = 10**9
     w3.eth.get_transaction_count.return_value = 0
-    w3.to_wei.side_effect = lambda val, unit: int(val * 10**9) if unit == "gwei" else val
+    w3.to_wei.side_effect = lambda val, unit: (
+        int(val * 10**9) if unit == "gwei" else val
+    )
     mock_web3.return_value = w3
     mock_send.return_value = "0xabc"
     mock_receipt.return_value = {"block_number": 1, "gas_used": 21000, "success": True}
@@ -450,7 +468,9 @@ def test_missing_wallet_key_structured(skill, monkeypatch):
 def test_transfer_insufficient_balance(mock_web3, skill):
     w3 = MagicMock()
     w3.eth.gas_price = 10**9
-    w3.to_wei.side_effect = lambda val, unit: int(val * 10**9) if unit == "gwei" else val
+    w3.to_wei.side_effect = lambda val, unit: (
+        int(val * 10**9) if unit == "gwei" else val
+    )
     mock_web3.return_value = w3
     erc20 = MagicMock()
     erc20.functions.balanceOf.side_effect = lambda _a: MagicMock(

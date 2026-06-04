@@ -144,9 +144,15 @@ class EvmTxHandlerSkill(BaseSkill):
         self.user_config = merged
 
     def _chain_key(self, chain: Optional[str]) -> str:
-        key = (chain or self.user_config.get("default_chain") or "ethereum").strip().lower()
+        key = (
+            (chain or self.user_config.get("default_chain") or "ethereum")
+            .strip()
+            .lower()
+        )
         if key not in self.chains:
-            raise ValueError(f"Unknown chain {key!r}. Supported: {', '.join(self.chains)}.")
+            raise ValueError(
+                f"Unknown chain {key!r}. Supported: {', '.join(self.chains)}."
+            )
         allowed = self.user_config.get("allowed_chains")
         if allowed and key not in [c.lower() for c in allowed]:
             raise ValueError(f"Chain {key!r} is not in allowed_chains.")
@@ -199,7 +205,9 @@ class EvmTxHandlerSkill(BaseSkill):
         return self._web3_cache[chain]
 
     def _private_key_env(self) -> str:
-        return str(self.user_config.get("private_key_env") or "AGENT_WALLET_PRIVATE_KEY")
+        return str(
+            self.user_config.get("private_key_env") or "AGENT_WALLET_PRIVATE_KEY"
+        )
 
     def _wallet_key_configured(self) -> bool:
         env_name = self._private_key_env()
@@ -334,7 +342,10 @@ class EvmTxHandlerSkill(BaseSkill):
             if intent.get(key) is not None:
                 merged[key] = intent[key]
 
-        if intent.get("slippage_bps") is None and self.user_config.get("slippage_bps") is not None:
+        if (
+            intent.get("slippage_bps") is None
+            and self.user_config.get("slippage_bps") is not None
+        ):
             merged.setdefault("slippage_bps", self.user_config["slippage_bps"])
 
         if side in ("buy", "sell"):
@@ -360,17 +371,25 @@ class EvmTxHandlerSkill(BaseSkill):
             missing.append("amount")
         return missing
 
-    def _suggested_defaults(self, resolved: Dict[str, Any], missing: List[str]) -> Dict[str, Any]:
+    def _suggested_defaults(
+        self, resolved: Dict[str, Any], missing: List[str]
+    ) -> Dict[str, Any]:
         suggestions: Dict[str, Any] = {}
         if "spend_asset" in missing:
             side = resolved.get("side")
             if side == "buy":
-                suggestions["spend_asset"] = self.user_config.get("default_spend_asset", "usdc")
+                suggestions["spend_asset"] = self.user_config.get(
+                    "default_spend_asset", "usdc"
+                )
             elif side == "sell":
-                suggestions["spend_asset"] = self.user_config.get("default_spend_asset", "usdc")
+                suggestions["spend_asset"] = self.user_config.get(
+                    "default_spend_asset", "usdc"
+                )
         return suggestions
 
-    def _action_resolve(self, intent: Dict[str, Any], _params: Dict[str, Any]) -> Dict[str, Any]:
+    def _action_resolve(
+        self, intent: Dict[str, Any], _params: Dict[str, Any]
+    ) -> Dict[str, Any]:
         resolved = self._merge_intent(intent)
         side = resolved.get("side")
 
@@ -394,7 +413,11 @@ class EvmTxHandlerSkill(BaseSkill):
             self._resolve_token_meta(resolved["chain"], resolved["spend_asset"])
             return {"status": "ready", "resolved": resolved}
 
-        if side == "send" or intent.get("recipient") or _params.get("action") == "transfer":
+        if (
+            side == "send"
+            or intent.get("recipient")
+            or _params.get("action") == "transfer"
+        ):
             missing = []
             if not resolved.get("target_asset"):
                 missing.append("target_asset")
@@ -412,7 +435,9 @@ class EvmTxHandlerSkill(BaseSkill):
                 }
             return {"status": "ready", "resolved": resolved}
 
-        return self._error("intent.side must be buy, sell, or use transfer action for sends.")
+        return self._error(
+            "intent.side must be buy, sell, or use transfer action for sends."
+        )
 
     # --- Quote / preview ---
 
@@ -447,7 +472,9 @@ class EvmTxHandlerSkill(BaseSkill):
         router_addr = Web3.to_checksum_address(self.chains[chain]["router_v2"])
         return w3.eth.contract(address=router_addr, abi=ROUTER_V2_ABI)
 
-    def _trade_assets(self, resolved: Dict[str, Any]) -> Tuple[Dict[str, Any], Dict[str, Any]]:
+    def _trade_assets(
+        self, resolved: Dict[str, Any]
+    ) -> Tuple[Dict[str, Any], Dict[str, Any]]:
         chain = resolved["chain"]
         side = resolved["side"]
         target = self._resolve_token_meta(chain, resolved["target_asset"])
@@ -464,7 +491,9 @@ class EvmTxHandlerSkill(BaseSkill):
         router = self._router(w3, chain)
         amount_kind = (resolved.get("amount_kind") or "target_out").lower()
         amount = float(resolved["amount"])
-        slippage_bps = int(resolved.get("slippage_bps") or self.user_config.get("slippage_bps") or 50)
+        slippage_bps = int(
+            resolved.get("slippage_bps") or self.user_config.get("slippage_bps") or 50
+        )
 
         if amount_kind == "target_out":
             amount_out_wei = self._to_wei(amount, token_out["decimals"])
@@ -516,7 +545,9 @@ class EvmTxHandlerSkill(BaseSkill):
             headers["x-cg-pro-api-key"] = str(api_key)
         return headers
 
-    def _coingecko_usd_unit_price(self, chain: str, token: Dict[str, Any]) -> Optional[float]:
+    def _coingecko_usd_unit_price(
+        self, chain: str, token: Dict[str, Any]
+    ) -> Optional[float]:
         if chain not in _COINGECKO_PLATFORM:
             return None
         try:
@@ -614,7 +645,9 @@ class EvmTxHandlerSkill(BaseSkill):
             preview["usd"] = usd
         return preview
 
-    def _action_quote(self, intent: Dict[str, Any], _params: Dict[str, Any]) -> Dict[str, Any]:
+    def _action_quote(
+        self, intent: Dict[str, Any], _params: Dict[str, Any]
+    ) -> Dict[str, Any]:
         resolved = self._merge_intent(intent)
         if resolved.get("side") not in ("buy", "sell"):
             return self._error("quote requires intent.side buy or sell.")
@@ -633,7 +666,9 @@ class EvmTxHandlerSkill(BaseSkill):
             "requires_confirmation": confirm,
         }
 
-    def _action_preview(self, intent: Dict[str, Any], params: Dict[str, Any]) -> Dict[str, Any]:
+    def _action_preview(
+        self, intent: Dict[str, Any], params: Dict[str, Any]
+    ) -> Dict[str, Any]:
         result = self._action_quote(intent, params)
         if result.get("status") != "ready":
             return result
@@ -670,7 +705,9 @@ class EvmTxHandlerSkill(BaseSkill):
         if allowance >= amount_wei:
             return None
         base = self._base_tx_params(w3, chain, policy, owner)
-        tx = erc20.functions.approve(router_address, MAX_UINT256).build_transaction(base)
+        tx = erc20.functions.approve(router_address, MAX_UINT256).build_transaction(
+            base
+        )
         return self._sign_and_send(w3, tx)
 
     def _build_swap_transaction(
@@ -716,7 +753,9 @@ class EvmTxHandlerSkill(BaseSkill):
             amount_in, min_out, path, to_address, deadline
         ).build_transaction(base)
 
-    def _action_execute(self, intent: Dict[str, Any], params: Dict[str, Any]) -> Dict[str, Any]:
+    def _action_execute(
+        self, intent: Dict[str, Any], params: Dict[str, Any]
+    ) -> Dict[str, Any]:
         need_confirm = self._require_confirmed(params)
         if need_confirm:
             need_confirm["agent_hint"] = (
@@ -824,7 +863,9 @@ class EvmTxHandlerSkill(BaseSkill):
     # --- Transfer ---
 
     def _require_confirmed(self, params: Dict[str, Any]) -> Optional[Dict[str, Any]]:
-        if self.user_config.get("confirm_before_send", True) and not params.get("confirmed"):
+        if self.user_config.get("confirm_before_send", True) and not params.get(
+            "confirmed"
+        ):
             return {
                 "status": "needs_confirmation",
                 "message": "Set confirmed: true after the user approves this transaction.",
@@ -854,7 +895,9 @@ class EvmTxHandlerSkill(BaseSkill):
         tx_hash = w3.eth.send_raw_transaction(signed.raw_transaction)
         return tx_hash.hex()
 
-    def _wait_receipt(self, w3: Web3, tx_hash: str, timeout: int = 120) -> Dict[str, Any]:
+    def _wait_receipt(
+        self, w3: Web3, tx_hash: str, timeout: int = 120
+    ) -> Dict[str, Any]:
         try:
             receipt = w3.eth.wait_for_transaction_receipt(tx_hash, timeout=timeout)
             return {
@@ -869,7 +912,9 @@ class EvmTxHandlerSkill(BaseSkill):
         template = self.chains[chain].get("explorer_tx_url", "")
         return template.format(tx_hash=tx_hash)
 
-    def _action_transfer(self, intent: Dict[str, Any], params: Dict[str, Any]) -> Dict[str, Any]:
+    def _action_transfer(
+        self, intent: Dict[str, Any], params: Dict[str, Any]
+    ) -> Dict[str, Any]:
         need_confirm = self._require_confirmed(params)
         if need_confirm:
             need_confirm["agent_hint"] = (
@@ -943,7 +988,9 @@ class EvmTxHandlerSkill(BaseSkill):
             }
         else:
             contract = w3.eth.contract(address=token["address"], abi=ERC20_ABI)
-            tx = contract.functions.transfer(recipient, amount_wei).build_transaction(base_tx)
+            tx = contract.functions.transfer(recipient, amount_wei).build_transaction(
+                base_tx
+            )
 
         tx_hash = self._sign_and_send(w3, tx)
         receipt = self._wait_receipt(w3, tx_hash)
@@ -957,7 +1004,9 @@ class EvmTxHandlerSkill(BaseSkill):
 
     # --- Read-only ---
 
-    def _action_balances(self, intent: Dict[str, Any], _params: Dict[str, Any]) -> Dict[str, Any]:
+    def _action_balances(
+        self, intent: Dict[str, Any], _params: Dict[str, Any]
+    ) -> Dict[str, Any]:
         missing_key = self._require_wallet_key()
         if missing_key:
             return missing_key
@@ -980,9 +1029,16 @@ class EvmTxHandlerSkill(BaseSkill):
             raw = contract.functions.balanceOf(address).call()
             balances[symbol] = self._from_wei(raw, int(meta["decimals"]))
 
-        return {"status": "ready", "chain": chain, "address": address, "balances": balances}
+        return {
+            "status": "ready",
+            "chain": chain,
+            "address": address,
+            "balances": balances,
+        }
 
-    def _action_wallet_info(self, _intent: Dict[str, Any], _params: Dict[str, Any]) -> Dict[str, Any]:
+    def _action_wallet_info(
+        self, _intent: Dict[str, Any], _params: Dict[str, Any]
+    ) -> Dict[str, Any]:
         missing_key = self._require_wallet_key()
         if missing_key:
             return missing_key
@@ -1025,7 +1081,9 @@ class EvmTxHandlerSkill(BaseSkill):
 
         invalid = [k for k in updates if k not in _PREFERENCE_KEYS]
         if invalid:
-            return self._error(f"Cannot update unknown preference keys: {', '.join(invalid)}.")
+            return self._error(
+                f"Cannot update unknown preference keys: {', '.join(invalid)}."
+            )
 
         if "gas_policy" in updates and updates["gas_policy"] not in _GAS_MULTIPLIERS:
             return self._error("Invalid gas_policy in preferences.")
