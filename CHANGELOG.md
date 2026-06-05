@@ -8,6 +8,8 @@ Contributors add user-facing entries under `[Unreleased]` in the same PR. Mainta
 
 ## [Unreleased]
 
+### Added
+- **`defi/evm_tx_handler`** (#142): Structured EVM agent wallet skill on Ethereum and Base — `resolve`, Uni V2 `quote`/`preview`/`execute` (approve + swap), `transfer`, `balances`, `wallet_info`, YAML registries, optional CoinGecko USD preview, `max_trade_usd` fail-closed cap, balance pre-flight checks, and mocked Web3 tests. Examples: `examples/gemini_evm_tx_handler.py`, `examples/claude_evm_tx_handler.py`.
 ### Changed
 - **CI**: GitHub Actions installs dependencies from `pyproject.toml` only (`pip install -e ".[dev,all]"`); removed redundant manual pip pins. CI runs `pytest tests/` only; co-located `skills/**/test_skill.py` remains a local pre-PR step (#151).
 - **Documentation**: [TESTING.md](docs/TESTING.md) and [CONTRIBUTING.md](CONTRIBUTING.md) aligned with CI scope and local skill-test workflow (#151).
