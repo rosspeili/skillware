@@ -1,3 +1,3 @@
-from .skill import MyAwesomeSkill
+from .skill import PromptRewriter
 
-__all__ = ["MyAwesomeSkill"]
+__all__ = ["PromptRewriter"]
