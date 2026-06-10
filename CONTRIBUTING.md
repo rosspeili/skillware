@@ -130,7 +130,7 @@ Follow the [Agent Code of Conduct](CODE_OF_CONDUCT.md): deterministic skill outp
   python -m pytest skills/<category>/<skill_name>/test_skill.py
   ```
 
-  Install packages from that skill's `manifest.yaml` `requirements` when they are not covered by `[all]`.
+- Install packages from that skill's `manifest.yaml` `requirements` when they are not covered by `[all]`. After adding a skill with new third-party deps, update the matching optional extra and `[all]` in `pyproject.toml` (see [Packaging](#packaging-pypi-and-pip-install)).
 - Wait for GitHub Actions CI to pass before requesting review.
 
 ### Pull request template
@@ -258,11 +258,18 @@ The primary guide for the host LLM.
 
 ### Packaging (PyPI and `pip install`)
 
-Registry skills are shipped inside the `skillware` wheel. You do **not** edit `pyproject.toml` per skill. Instead:
+Registry skills are shipped inside the `skillware` wheel. Per-skill layout uses `manifest.yaml` and packaging hooks below — not per-skill edits to CI.
 
 - Add an empty `__init__.py` in `skills/<category>/` when you introduce a **new category**, and in `skills/<category>/<skill_name>/` for each new skill directory (enforced by `tests/test_skill_issuer.py`).
 - Non-Python files (`manifest.yaml`, `instructions.md`, `card.json`, data files) are included automatically via `MANIFEST.in` and `[tool.setuptools.package-data]` (`skills = ["**/*"]`).
 - Confirm `SkillLoader.load_skill("<category>/<skill_name>")` works from the repo root and, when changing the loader, from a clean `pip install` of the built wheel.
+
+**Manifest `requirements` and optional extras**
+
+- List runtime packages in the skill's `manifest.yaml` `requirements` (source of truth for loaders and docs).
+- Mirror any package **not** already in core `[project.dependencies]` into `[project.optional-dependencies]` in `pyproject.toml`: use an existing group when it fits (`[gemini]`, `[office]`, `[defi]`, `[embeddings]`, …) and always add the same pins to `[all]`.
+- Core already includes `requests`, `pyyaml`, and `beautifulsoup4` (manifests may say `bs4`).
+- Contributors and CI install everything needed for bundle tests with `pip install -e ".[dev,all]"`.
 
 ### 6. `docs/skills/<skill_name>.md` (catalog page)
 

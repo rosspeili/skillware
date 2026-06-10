@@ -7,6 +7,8 @@
 #   pip install "skillware[claude]"        # + Anthropic SDK
 #   pip install "skillware[openai]"        # + OpenAI SDK
 #   pip install "skillware[office]"        # + PyMuPDF
-#   pip install "skillware[all]"           # + all optional SDKs
+#   pip install "skillware[defi]"            # + web3 (EVM skills)
+#   pip install "skillware[embeddings]"      # + fastembed, numpy
+#   pip install "skillware[all]"           # + all optional SDKs and skill runtime deps
 #   pip install "skillware[dev]"           # + testing and linting tools
 -e ".[dev,all]"
