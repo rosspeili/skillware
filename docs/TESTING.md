@@ -126,7 +126,7 @@ python -m pytest tests/
 
 That covers **framework tests** and **maintainer skill tests** under `tests/`. It does not run `examples/` or skill bundle tests. Do not add per-skill pip lines or test paths to `.github/workflows/ci.yml`.
 
-Skill deps belong in each skill's `manifest.yaml` `requirements`; mirror them in `pyproject.toml` optional extras when contributors need a one-shot install via `[all]`.
+The `[all]` extra includes optional SDK groups plus registry skill runtime deps (`web3`, `fastembed`, `numpy`, …) so `pytest skills/` works after `pip install -e ".[dev,all]"`. When a skill adds new `manifest.yaml` `requirements`, add the same packages to the matching optional extra and to `[all]` in `pyproject.toml`.
 
 ### Local commands
 
