@@ -11,6 +11,9 @@ Contributors add user-facing entries under `[Unreleased]` in the same PR. Mainta
 ### Added
 - **Tests**: Backfilled `test_skill.py` for six registry skills (`mica_module`, `pii_masker`, `synthetic_generator`, `wallet_screening`, `pdf_form_filler`, `prompt_rewriter`); all registry skills now ship co-located bundle tests. Fixed `prompt_rewriter` package export so pytest can collect the bundle (#158).
 
+### Fixed
+- **`novelty_extractor`**: Bundle tests mock fastembed embeddings so CI avoids HuggingFace downloads and rate limits (#159 follow-up).
+
 ### Changed
 - **CI**: GitHub Actions runs `pytest skills/` then `pytest tests/` after lint (bundle + framework/maintainer tests; closes #90) (#159).
 - **CI**: CodeQL GitHub Action upgraded from v3 to v4.
