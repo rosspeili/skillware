@@ -23,6 +23,7 @@ dependencies = [
     "python-dotenv",
     "beautifulsoup4",
     "packaging",
+    "rich>=13.0",
 ]
 requires-python = ">=3.10"
 
@@ -36,9 +37,7 @@ dev = [
     "flake8",
     "black",
 ]
-cli = [
-    "rich>=13.0",
-]
+cli = []
 gemini = [
     "google-genai",
 ]
