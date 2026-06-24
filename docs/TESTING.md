@@ -4,6 +4,20 @@ Skillware maintains high standards for code quality and reliability. Before subm
 
 Tests fall into four layers: **bundle**, **framework**, **maintainer**, and **example**. Use that vocabulary consistently in docs and PRs.
 
+## Status
+
+| Capability | Status |
+| :--- | :---: |
+| Bundle tests in CI (`pytest skills/`) | Done |
+| Every registry skill ships `test_skill.py` | Done |
+| Issuer enforces bundle tests on new skills | Done |
+| Bundle tests mock network and model downloads in CI | Done |
+| Maintainer tests under `tests/skills/` (optional per skill) | Done |
+| `[all]` extra covers bundle-test runtime deps | Done |
+| CLI `skillware test` for bundle discovery | Planned |
+
+Every pull request runs `black --check`, `flake8`, `pytest skills/`, and `pytest tests/`. Bundle tests gate merge the same as framework and maintainer tests.
+
 ## Quick Setup
 
 Install lint tools, pytest, and optional skill runtime deps in one go (matches GitHub Actions CI):
