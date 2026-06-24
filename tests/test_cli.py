@@ -1,7 +1,9 @@
 from skillware.cli import (
     _discover_skills,
+    _resolve_pytest_targets,
     cmd_list,
     cmd_interactive,
+    cmd_test,
     _short_description,
     cmd_help,
 )
@@ -233,7 +235,7 @@ def test_main_module_invocation():
 
 
 def test_cmd_help_includes_list_examples(capsys):
-    """cmd_help should include category and issuer examples."""
+    """cmd_help should include category, test, and issuer examples."""
     import io
     from rich.console import Console
 
@@ -244,7 +246,7 @@ def test_cmd_help_includes_list_examples(capsys):
     output = buf.getvalue()
     assert "--category" in output
     assert "--issuer" in output
-    assert "--skills-root" in output
+    assert "skillware test" in output
 
 
 def test_interactive_help_dispatches_to_cmd_help(monkeypatch):
@@ -279,3 +281,161 @@ def test_version_flag(capsys):
 
     captured = capsys.readouterr()
     assert "skillware" in captured.out.lower()
+
+
+def _make_bundle(tmp_path, category, name, with_test=True):
+    skill_dir = tmp_path / category / name
+    skill_dir.mkdir(parents=True)
+    (skill_dir / "skill.py").touch()
+    (skill_dir / "manifest.yaml").write_text(
+        f"name: {name}\nversion: 0.1.0\ndescription: Test.\n"
+    )
+    if with_test:
+        (skill_dir / "test_skill.py").touch()
+    return skill_dir
+
+
+def test_resolve_pytest_targets_skill_id(tmp_path):
+    _make_bundle(tmp_path, "office", "pdf_form_filler")
+    targets, error = _resolve_pytest_targets(
+        skills_root_override=tmp_path,
+        skill_id="office/pdf_form_filler",
+    )
+    assert error is None
+    assert targets == [tmp_path / "office" / "pdf_form_filler" / "test_skill.py"]
+
+
+def test_resolve_pytest_targets_category(tmp_path):
+    _make_bundle(tmp_path, "office", "pdf_form_filler")
+    _make_bundle(tmp_path, "finance", "wallet_screening")
+    targets, error = _resolve_pytest_targets(
+        skills_root_override=tmp_path,
+        category="office",
+    )
+    assert error is None
+    assert targets == [tmp_path / "office"]
+
+
+def test_resolve_pytest_targets_all_roots(tmp_path):
+    _make_bundle(tmp_path, "office", "pdf_form_filler")
+    targets, error = _resolve_pytest_targets(skills_root_override=tmp_path)
+    assert error is None
+    assert targets == [tmp_path]
+
+
+def test_resolve_pytest_targets_missing_skill(tmp_path):
+    targets, error = _resolve_pytest_targets(
+        skills_root_override=tmp_path,
+        skill_id="office/missing",
+    )
+    assert targets == []
+    assert "No bundle test found" in error
+
+
+def test_resolve_pytest_targets_skill_id_and_category_conflict():
+    targets, error = _resolve_pytest_targets(
+        skill_id="office/pdf_form_filler",
+        category="office",
+    )
+    assert targets == []
+    assert "not both" in error
+
+
+def test_cmd_test_invokes_pytest(tmp_path, monkeypatch):
+    import sys
+
+    _make_bundle(tmp_path, "office", "pdf_form_filler")
+    captured = {}
+
+    def fake_run(cmd, check=False):
+        captured["cmd"] = cmd
+
+        class Result:
+            returncode = 0
+
+        return Result()
+
+    monkeypatch.setattr("skillware.cli.subprocess.run", fake_run)
+
+    rc = cmd_test(
+        skills_root_override=tmp_path,
+        skill_id="office/pdf_form_filler",
+    )
+    assert rc == 0
+    assert captured["cmd"][0] == sys.executable
+    assert captured["cmd"][1:3] == ["-m", "pytest"]
+    assert (
+        str(tmp_path / "office" / "pdf_form_filler" / "test_skill.py")
+        in captured["cmd"]
+    )
+
+
+def test_cmd_test_verbose_flag(tmp_path, monkeypatch):
+    _make_bundle(tmp_path, "office", "pdf_form_filler")
+    captured = {}
+
+    def fake_run(cmd, check=False):
+        captured["cmd"] = cmd
+
+        class Result:
+            returncode = 0
+
+        return Result()
+
+    monkeypatch.setattr("skillware.cli.subprocess.run", fake_run)
+
+    cmd_test(
+        skills_root_override=tmp_path,
+        skill_id="office/pdf_form_filler",
+        verbose=True,
+        no_header=True,
+    )
+    assert "-v" in captured["cmd"]
+    assert "--no-header" in captured["cmd"]
+
+
+def test_cmd_test_missing_bundle_returns_nonzero(tmp_path):
+    rc = cmd_test(
+        skills_root_override=tmp_path,
+        skill_id="office/missing",
+    )
+    assert rc == 1
+
+
+def test_main_test_subcommand_exits_with_cmd_test_code(monkeypatch):
+    import sys
+    from skillware.cli import main
+
+    monkeypatch.setattr("skillware.cli.cmd_test", lambda **kwargs: 0)
+
+    argv = sys.argv
+    sys.argv = ["skillware", "test", "office/pdf_form_filler"]
+    try:
+        with pytest.raises(SystemExit) as exc:
+            main()
+        assert exc.value.code == 0
+    finally:
+        sys.argv = argv
+
+
+def test_interactive_test_dispatch(tmp_path, monkeypatch):
+    """Entering 3 or test should dispatch to cmd_test."""
+    import io
+    from rich.console import Console
+
+    _make_bundle(tmp_path, "office", "test_skill")
+    captured = {}
+
+    def fake_test(**kwargs):
+        captured["called"] = True
+        return 0
+
+    monkeypatch.setattr("skillware.cli.cmd_test", fake_test)
+
+    responses = iter(["test", "q"])
+    monkeypatch.setattr("builtins.input", lambda _: next(responses))
+
+    buf = io.StringIO()
+    cmd_interactive(console=Console(file=buf, force_terminal=False))
+
+    assert captured.get("called") is True
