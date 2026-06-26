@@ -8,6 +8,8 @@ Contributors add user-facing entries under `[Unreleased]` in the same PR. Mainta
 
 ## [Unreleased]
 
+## [0.3.8] - 2026-06-26
+
 ### Changed
 
 - **Tests**: `tests/test_skill_issuer.py` now requires `test_skill.py` for every registry skill under `skills/` (#160).
