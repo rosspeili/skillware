@@ -18,6 +18,7 @@ After installation, the `skillware` command is available directly:
     skillware
     skillware list
     skillware test
+    skillware examples
     skillware --version
 
 If `skillware` is not recognized, Python's `Scripts` directory may not be on
@@ -78,9 +79,9 @@ Available commands:
 | Input | Command | Status |
 | :--- | :--- | :--- |
 | `1` / `list` | List all locally installed skills | Available |
-| `2` / `paths` | Show and repair skill directory resolution paths | Coming soon |
 | `3` / `test` | Run bundle tests (`test_skill.py`) for one or all skills | Available |
-| `4` / `help` | Print rich-formatted help with commands, flags, and examples | Available |
+| `4` / `paths` | Show and repair skill directory resolution paths | Coming soon |
+| `5` / `help` | Print rich-formatted help with commands, flags, and examples | Available |
 
 ## Commands
 
@@ -104,17 +105,43 @@ Sample output:
 | `--category <name>` | Show only skills in the given category. Discovered at runtime, never hardcoded. |
 | `--issuer <handle>` | Show only skills by a given GitHub handle or issuer name. |
 | `--skills-root <path>` | Override the skills directory for this command only. |
+| `--examples` | Add an **EXAMPLES** column with the count of indexed scripts per skill (`-` when none). Works with `--category` and `--issuer`. |
 
 #### Examples
 
     # Filter by category
     skillware list --category compliance
 
+    # Show example script counts per skill
+    skillware list --examples
+    skillware list --examples --category dev_tools
+
     # Filter by issuer
     skillware list --issuer rosspeili
 
     # Use a custom skills directory
     skillware list --skills-root /path/to/my/skills
+
+### skillware examples
+
+List runnable scripts indexed in `examples/README.md` (source of truth — the CLI does not scan `examples/*.py` directly).
+
+    skillware examples
+    skillware examples compliance/tos_evaluator
+    skillware examples finance/wallet_screening
+
+#### Arguments
+
+| Input | Description |
+| :--- | :--- |
+| *(no args)* | All indexed scripts (script-first view) |
+| `<category>/<skill_name>` | Scripts linked to that skill ID only |
+
+Columns: Script, Skill ID(s), Provider, Required extra, and a **GITHUB** link to the script on `main` (for example `https://github.com/ARPAHLS/skillware/blob/main/examples/gemini_tos_evaluator.py`). Environment variables and longer notes stay in `examples/README.md`; a one-line pointer is printed below the table.
+
+Unknown skill IDs exit with a helpful message and non-zero status.
+
+In the interactive menu, choose **`2` / `examples`**, optionally enter a skill ID, then browse the same table with GitHub links.
 
 ### skillware test
 
