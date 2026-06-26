@@ -79,9 +79,9 @@ Available commands:
 | Input | Command | Status |
 | :--- | :--- | :--- |
 | `1` / `list` | List all locally installed skills | Available |
-| `2` / `paths` | Show and repair skill directory resolution paths | Coming soon |
 | `3` / `test` | Run bundle tests (`test_skill.py`) for one or all skills | Available |
-| `4` / `help` | Print rich-formatted help with commands, flags, and examples | Available |
+| `4` / `paths` | Show and repair skill directory resolution paths | Coming soon |
+| `5` / `help` | Print rich-formatted help with commands, flags, and examples | Available |
 
 ## Commands
 
@@ -137,9 +137,11 @@ List runnable scripts indexed in `examples/README.md` (source of truth — the C
 | *(no args)* | All indexed scripts (script-first view) |
 | `<category>/<skill_name>` | Scripts linked to that skill ID only |
 
-Columns: Script, Skill ID(s), Provider, Required extra, Required env vars. A one-line pointer to `examples/README.md` is printed for full notes.
+Columns: Script, Skill ID(s), Provider, Required extra, and a **GITHUB** link to the script on `main` (for example `https://github.com/ARPAHLS/skillware/blob/main/examples/gemini_tos_evaluator.py`). Environment variables and longer notes stay in `examples/README.md`; a one-line pointer is printed below the table.
 
 Unknown skill IDs exit with a helpful message and non-zero status.
+
+In the interactive menu, choose **`2` / `examples`**, optionally enter a skill ID, then browse the same table with GitHub links.
 
 ### skillware test
 

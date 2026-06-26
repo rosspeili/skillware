@@ -28,6 +28,7 @@ MENU_STYLE = "#FFDAC1"  # peach     - menu category
 _EXAMPLES_README_REL = Path("examples") / "README.md"
 _PARENT_WALK_LIMIT = 6
 _SKILL_ID_PATTERN = re.compile(r"`([\w-]+/[\w-]+)`")
+_EXAMPLES_GITHUB_BLOB_BASE = "https://github.com/ARPAHLS/skillware/blob/main/examples"
 
 
 def _flatten_table_cell(text: str, max_len: int = 80) -> str:
@@ -44,6 +45,11 @@ def _examples_readme_display_path(readme_path: Path) -> str:
         return readme_path.relative_to(Path.cwd()).as_posix()
     except ValueError:
         return "examples/README.md"
+
+
+def _example_github_url(script: str) -> str:
+    """Canonical GitHub blob URL for an indexed example script."""
+    return f"{_EXAMPLES_GITHUB_BLOB_BASE}/{script}"
 
 
 def _examples_readme_path() -> Optional[Path]:
@@ -404,15 +410,15 @@ def cmd_examples(
     table.add_column("SKILL ID", style=CATEGORY_STYLE, ratio=2)
     table.add_column("PROVIDER", no_wrap=True, ratio=1)
     table.add_column("EXTRA", style="dim", ratio=1)
-    table.add_column("ENV VARS", style="dim", ratio=2)
+    table.add_column("GITHUB", style=f"dim {SPLASH_STYLE}", ratio=3)
 
     for row in rows:
         table.add_row(
             row["script"],
             ", ".join(row["skill_ids"]),
-            _flatten_table_cell(row["provider"], max_len=40),
-            _flatten_table_cell(row["extra"], max_len=40),
-            _flatten_table_cell(row["env_vars"], max_len=72),
+            _flatten_table_cell(row["provider"], max_len=32),
+            _flatten_table_cell(row["extra"], max_len=28),
+            _example_github_url(row["script"]),
         )
 
     console.print(table)
@@ -421,6 +427,25 @@ def cmd_examples(
         style="dim",
     )
     return 0
+
+
+def _prompt_examples_skill_id(console) -> Tuple[Optional[str], bool]:
+    """Return (skill_id or None for all, should_run)."""
+    try:
+        raw = input("  skill id (optional, Enter for all): ").strip()
+    except (KeyboardInterrupt, EOFError):
+        console.print("\n  Cancelled.", style="dim")
+        return None, False
+    if not raw:
+        return None, True
+    parts = raw.split("/")
+    if len(parts) != 2 or not all(parts):
+        console.print(
+            f"  Invalid skill ID '{raw}'. Expected category/skill_name.",
+            style="dim #FF9AA2",
+        )
+        return None, False
+    return raw, True
 
 
 def _print_menu(console, menu) -> None:
@@ -463,7 +488,7 @@ def cmd_help(console=None) -> None:
     console.print(
         "  skillware                     — open interactive menu", style="dim"
     )
-    console.print("  1-4 or command name           — select a menu option", style="dim")
+    console.print("  1-5 or command name           — select a menu option", style="dim")
     console.print("  q or Ctrl+C                   — exit", style="dim")
     console.print()
 
@@ -520,19 +545,22 @@ def cmd_interactive(console=None, parser=None) -> None:
 
     menu = [
         ("1", "list", "discover and display all locally installed skills"),
-        ("2", "paths (soon)", "show and repair skill directory resolution paths"),
+        ("2", "examples", "browse runnable scripts from examples/README.md"),
         ("3", "test", "run bundle tests (test_skill.py) for one or all skills"),
-        ("4", "help", "usage guide for any command"),
+        ("4", "paths (soon)", "show and repair skill directory resolution paths"),
+        ("5", "help", "usage guide for any command"),
     ]
 
     commands = {
         "1": "list",
         "list": "list",
-        "2": "paths",
-        "paths": "paths",
+        "2": "examples",
+        "examples": "examples",
         "3": "test",
         "test": "test",
-        "4": "help",
+        "4": "paths",
+        "paths": "paths",
+        "5": "help",
         "help": "help",
     }
 
@@ -553,6 +581,10 @@ def cmd_interactive(console=None, parser=None) -> None:
 
         if command == "list":
             cmd_list(console=console)
+        elif command == "examples":
+            skill_id, run = _prompt_examples_skill_id(console)
+            if run:
+                cmd_examples(skill_id=skill_id, console=console)
         elif command == "test":
             cmd_test(console=console)
         elif command == "paths":

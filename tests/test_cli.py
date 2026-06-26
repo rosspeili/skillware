@@ -3,6 +3,7 @@ from skillware.cli import (
     _resolve_pytest_targets,
     _parse_examples_index,
     _example_counts_by_skill,
+    _example_github_url,
     cmd_list,
     cmd_examples,
     cmd_interactive,
@@ -254,11 +255,11 @@ def test_cmd_help_includes_list_examples(capsys):
 
 
 def test_interactive_help_dispatches_to_cmd_help(monkeypatch):
-    """Interactive menu option 4 / help should call cmd_help."""
+    """Interactive menu option 5 / help should call cmd_help."""
     import io
     from rich.console import Console
 
-    responses = iter(["4", "q"])
+    responses = iter(["5", "q"])
     monkeypatch.setattr("builtins.input", lambda _: next(responses))
 
     buf = io.StringIO()
@@ -445,6 +446,28 @@ def test_interactive_test_dispatch(tmp_path, monkeypatch):
     assert captured.get("called") is True
 
 
+def test_interactive_examples_dispatch(examples_readme, monkeypatch):
+    """Entering examples should prompt and dispatch to cmd_examples."""
+    import io
+    from rich.console import Console
+
+    captured = {}
+
+    def fake_examples(**kwargs):
+        captured["skill_id"] = kwargs.get("skill_id")
+        return 0
+
+    monkeypatch.setattr("skillware.cli.cmd_examples", fake_examples)
+
+    responses = iter(["examples", "", "q"])
+    monkeypatch.setattr("builtins.input", lambda _: next(responses))
+
+    buf = io.StringIO()
+    cmd_interactive(console=Console(file=buf, force_terminal=False))
+
+    assert captured.get("skill_id") is None
+
+
 SAMPLE_EXAMPLES_README = """# Examples
 
 ## Runnable Scripts
@@ -532,6 +555,27 @@ def test_cmd_examples_filters_by_skill_id(examples_readme):
     output = buf.getvalue()
     assert "gemini_tos_evaluator.py" in output
     assert "ollama_skills_test.py" not in output
+
+
+def test_example_github_url():
+    url = _example_github_url("build_dataset_demo.py")
+    assert url == (
+        "https://github.com/ARPAHLS/skillware/blob/main/examples/build_dataset_demo.py"
+    )
+
+
+def test_cmd_examples_includes_github_links(examples_readme):
+    import io
+    from rich.console import Console
+
+    buf = io.StringIO()
+    cmd_examples(
+        skill_id="compliance/tos_evaluator",
+        console=Console(file=buf, force_terminal=False, width=220),
+    )
+    output = buf.getvalue()
+    assert "gemini_tos_evaluator.py" in output
+    assert "github.com/ARPAHLS/skillware/blob/main/examples/" in output
 
 
 def test_cmd_examples_unknown_skill_returns_nonzero(examples_readme):
