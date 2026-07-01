@@ -21,6 +21,7 @@ client = anthropic.Anthropic(
 )
 
 tools = [SkillLoader.to_claude_tool(skill_bundle)]
+TOOL_NAME = skill_bundle["manifest"]["name"]
 
 # 4. Run Agent Loop
 pdf_path = os.path.abspath("test_form.pdf")
@@ -44,7 +45,7 @@ if message.stop_reason == "tool_use":
     print(f"\nClaude requested tool: {tool_name}")
     print(f"Input: {tool_input}")
 
-    if tool_name == "pdf_form_filler":
+    if tool_name == TOOL_NAME:
         # Check file
         if not os.path.exists(tool_input.get("pdf_path", "")):
             print(

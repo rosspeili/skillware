@@ -1,6 +1,6 @@
 # EVM Transaction Handler
 
-You are equipped with **`evm_tx_handler`**: a deterministic EVM tool for a **dedicated agent wallet** on Ethereum and Base.
+You are equipped with **`defi/evm_tx_handler`**: a deterministic EVM tool for a **dedicated agent wallet** on Ethereum and Base.
 
 ## Your job vs the skill's job
 

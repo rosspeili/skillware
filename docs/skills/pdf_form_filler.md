@@ -125,7 +125,8 @@ bundle = SkillLoader.load_skill("office/pdf_form_filler")
 skill = bundle["module"].PDFFormFillerSkill()
 client = anthropic.Anthropic(api_key=os.environ.get("ANTHROPIC_API_KEY"))
 tools = [SkillLoader.to_claude_tool(bundle)]
-# On tool_use (name pdf_form_filler): skill.execute(tool_use.input), return tool_result
+# On tool_use, match name against bundle["manifest"]["name"] (office/pdf_form_filler):
+# skill.execute(tool_use.input), return tool_result
 ```
 
 ### OpenAI
@@ -141,7 +142,7 @@ bundle = SkillLoader.load_skill("office/pdf_form_filler")
 skill = bundle["module"].PDFFormFillerSkill()
 openai_tool = SkillLoader.to_openai_tool(bundle)
 client = OpenAI(api_key=os.environ.get("OPENAI_API_KEY"))
-# Match tool_call.function.name to openai_tool["function"]["name"] (pdf_form_filler)
+# Match tool_call.function.name to openai_tool["function"]["name"] (office_pdf_form_filler)
 ```
 
 ### DeepSeek
@@ -164,7 +165,7 @@ client = OpenAI(
 
 ### Ollama
 
-`SkillLoader.to_ollama_prompt(bundle)`; match `"tool": "pdf_form_filler"`. See [Ollama usage](../usage/ollama.md).
+`SkillLoader.to_ollama_prompt(bundle)`; match `"tool": "office/pdf_form_filler"`. See [Ollama usage](../usage/ollama.md).
 
 ## Data Schema
 

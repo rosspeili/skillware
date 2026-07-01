@@ -101,7 +101,8 @@ response = client.models.generate_content(
         system_instruction=bundle["instructions"],
     ),
 )
-# On function_call (evm_tx_handler): skill.execute({"action": ..., "intent": ...})
+# On function_call, match bundle["manifest"]["name"] (defi/evm_tx_handler):
+# skill.execute({"action": ..., "intent": ...})
 # After preview + user approval: skill.execute({"action": "execute", "intent": intent, "confirmed": True})
 ```
 
@@ -119,7 +120,8 @@ skill = bundle["module"].EvmTxHandlerSkill()
 client = anthropic.Anthropic(api_key=os.environ.get("ANTHROPIC_API_KEY"))
 tools = [SkillLoader.to_claude_tool(bundle)]
 
-# On tool_use (evm_tx_handler): skill.execute(tool_use.input)
+# On tool_use, match name against bundle["manifest"]["name"] (defi/evm_tx_handler):
+# skill.execute(tool_use.input)
 # execute example:
 # skill.execute({"action": "execute", "intent": intent, "confirmed": True})
 ```

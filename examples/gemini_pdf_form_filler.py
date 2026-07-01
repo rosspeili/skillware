@@ -19,6 +19,7 @@ pdf_skill = PDFFormFillerSkill()
 client = genai.Client()
 tool = SkillLoader.to_gemini_tool(skill_bundle)
 system_instruction = skill_bundle["instructions"]
+TOOL_NAME = skill_bundle["manifest"]["name"]
 
 pdf_path = os.path.abspath("test_form.pdf")
 user_query = (
@@ -47,7 +48,7 @@ while response.candidates and response.candidates[0].content.parts:
         print(f"Agent wants to call: {fn_name}")
         print(f"   Args: {fn_args}")
 
-        if fn_name == "pdf_form_filler":
+        if fn_name == TOOL_NAME:
             try:
                 if not os.path.exists(fn_args.get("pdf_path", "")):
                     print(f"Error: PDF file not found at {fn_args.get('pdf_path')}")

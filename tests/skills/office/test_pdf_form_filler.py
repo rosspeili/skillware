@@ -12,6 +12,17 @@ from skills.office.pdf_form_filler.utils import (
     FieldEdit,
 )
 
+from skillware.core.loader import SkillLoader
+
+
+def test_pdf_form_filler_manifest():
+    bundle = SkillLoader.load_skill("office/pdf_form_filler")
+    skill = bundle["module"].PDFFormFillerSkill()
+    manifest = bundle["manifest"]
+    assert skill.manifest["name"] == manifest["name"]
+    assert manifest["name"] == "office/pdf_form_filler"
+
+
 # --- Utils Tests ---
 
 
