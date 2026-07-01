@@ -101,7 +101,8 @@ response = client.models.generate_content(
         system_instruction=bundle["instructions"],
     ),
 )
-# On function_call (evm_tx_handler): skill.execute({"action": ..., "intent": ...})
+# On function_call, match bundle["manifest"]["name"] (defi/evm_tx_handler):
+# skill.execute({"action": ..., "intent": ...})
 # After preview + user approval: skill.execute({"action": "execute", "intent": intent, "confirmed": True})
 ```
 
@@ -119,10 +120,50 @@ skill = bundle["module"].EvmTxHandlerSkill()
 client = anthropic.Anthropic(api_key=os.environ.get("ANTHROPIC_API_KEY"))
 tools = [SkillLoader.to_claude_tool(bundle)]
 
-# On tool_use (evm_tx_handler): skill.execute(tool_use.input)
+# On tool_use, match name against bundle["manifest"]["name"] (defi/evm_tx_handler):
+# skill.execute(tool_use.input)
 # execute example:
 # skill.execute({"action": "execute", "intent": intent, "confirmed": True})
 ```
+
+### OpenAI
+
+```python
+import os
+from openai import OpenAI
+from skillware.core.env import load_env_file
+from skillware.core.loader import SkillLoader
+
+load_env_file()
+bundle = SkillLoader.load_skill("defi/evm_tx_handler")
+skill = bundle["module"].EvmTxHandlerSkill()
+openai_tool = SkillLoader.to_openai_tool(bundle)
+client = OpenAI(api_key=os.environ.get("OPENAI_API_KEY"))
+# Match tool_call.function.name to openai_tool["function"]["name"] (defi_evm_tx_handler)
+```
+
+### DeepSeek
+
+```python
+import os
+from openai import OpenAI
+from skillware.core.env import load_env_file
+from skillware.core.loader import SkillLoader
+
+load_env_file()
+bundle = SkillLoader.load_skill("defi/evm_tx_handler")
+skill = bundle["module"].EvmTxHandlerSkill()
+deepseek_tool = SkillLoader.to_deepseek_tool(bundle)
+client = OpenAI(
+    api_key=os.environ.get("DEEPSEEK_API_KEY"),
+    base_url="https://api.deepseek.com",
+)
+# Match tool_call.function.name to deepseek_tool["function"]["name"] (defi_evm_tx_handler)
+```
+
+### Ollama
+
+`SkillLoader.to_ollama_prompt(bundle)`; match `"tool": "defi/evm_tx_handler"`. See [Ollama usage](../usage/ollama.md).
 
 ## Limitations
 

@@ -20,9 +20,9 @@ Provider guides contain full API details. Skill pages contain copy-paste example
 | Claude | `manifest["name"]` |
 | OpenAI | `to_openai_tool(bundle)["function"]["name"]` (sanitized, e.g. `compliance_tos_evaluator`) |
 | DeepSeek | `to_deepseek_tool(bundle)["function"]["name"]` (same sanitization rules) |
-| Ollama (prompt) | `"tool"` field in the JSON block the model emits |
+| Ollama (prompt) | `"tool"` field in the JSON block the model emits (same as `manifest["name"]` when the manifest uses the full registry ID) |
 
----
+**Registry manifest names:** Every bundled skill uses `manifest["name"]` = `category/skill_name` (for example `office/pdf_form_filler`, `defi/evm_tx_handler`). Match tool calls with `bundle["manifest"]["name"]` on Gemini and Claude, or derive sanitized names from the adapter on OpenAI and DeepSeek (`office_pdf_form_filler`, `defi_evm_tx_handler`). Do not hardcode legacy short names in examples.
 
 ## Minimal execute (no LLM)
 

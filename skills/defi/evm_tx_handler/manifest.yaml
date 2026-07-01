@@ -1,4 +1,4 @@
-name: evm_tx_handler
+name: defi/evm_tx_handler
 version: 0.2.0
 description: |
   Operates a dedicated EVM agent wallet for structured buy/sell on Ethereum and Base:

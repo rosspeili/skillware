@@ -80,8 +80,8 @@ load_env_file()
 bundle = SkillLoader.load_skill("office/pdf_form_filler")
 skill = bundle["module"].PDFFormFillerSkill()
 client = genai.Client()
-# User: "Fill /path/to/form.pdf — name John Doe, check the terms box."
 tool = SkillLoader.to_gemini_tool(bundle)
+tool_name = bundle["manifest"]["name"]
 response = client.models.generate_content(
     model="gemini-2.5-flash",
     contents="Fill /path/to/form.pdf — name John Doe, check the terms box.",
@@ -91,7 +91,7 @@ response = client.models.generate_content(
     ),
 )
 for part in response.candidates[0].content.parts:
-    if part.function_call:
+    if part.function_call and part.function_call.name == tool_name:
         result = skill.execute(dict(part.function_call.args))
         follow_up = client.models.generate_content(
             model="gemini-2.5-flash",
@@ -125,7 +125,8 @@ bundle = SkillLoader.load_skill("office/pdf_form_filler")
 skill = bundle["module"].PDFFormFillerSkill()
 client = anthropic.Anthropic(api_key=os.environ.get("ANTHROPIC_API_KEY"))
 tools = [SkillLoader.to_claude_tool(bundle)]
-# On tool_use (name pdf_form_filler): skill.execute(tool_use.input), return tool_result
+# On tool_use, match name against bundle["manifest"]["name"] (office/pdf_form_filler):
+# skill.execute(tool_use.input), return tool_result
 ```
 
 ### OpenAI
@@ -141,7 +142,7 @@ bundle = SkillLoader.load_skill("office/pdf_form_filler")
 skill = bundle["module"].PDFFormFillerSkill()
 openai_tool = SkillLoader.to_openai_tool(bundle)
 client = OpenAI(api_key=os.environ.get("OPENAI_API_KEY"))
-# Match tool_call.function.name to openai_tool["function"]["name"] (pdf_form_filler)
+# Match tool_call.function.name to openai_tool["function"]["name"] (office_pdf_form_filler)
 ```
 
 ### DeepSeek
@@ -160,11 +161,12 @@ client = OpenAI(
     api_key=os.environ.get("DEEPSEEK_API_KEY"),
     base_url="https://api.deepseek.com",
 )
+# Match tool_call.function.name to deepseek_tool["function"]["name"] (office_pdf_form_filler)
 ```
 
 ### Ollama
 
-`SkillLoader.to_ollama_prompt(bundle)`; match `"tool": "pdf_form_filler"`. See [Ollama usage](../usage/ollama.md).
+`SkillLoader.to_ollama_prompt(bundle)`; match `"tool": "office/pdf_form_filler"`. See [Ollama usage](../usage/ollama.md).
 
 ## Data Schema
 

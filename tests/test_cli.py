@@ -24,7 +24,7 @@ def test_discover_skills_returns_skills(tmp_path):
 
     manifest = skill_dir / "manifest.yaml"
     manifest.write_text(
-        "name: pdf_form_filler\n"
+        "name: office/pdf_form_filler\n"
         "version: 0.1.0\n"
         "description: Fills PDF forms.\n"
         "requirements:\n"
@@ -94,7 +94,7 @@ def test_discover_skills_includes_issuer(tmp_path):
 
     manifest = skill_dir / "manifest.yaml"
     manifest.write_text(
-        "name: pdf_form_filler\n"
+        "name: office/pdf_form_filler\n"
         "version: 0.1.0\n"
         "description: Fills PDF forms.\n"
         "issuer:\n"
@@ -115,7 +115,7 @@ def test_discover_skills_issuer_falls_back_to_name(tmp_path):
 
     manifest = skill_dir / "manifest.yaml"
     manifest.write_text(
-        "name: pdf_form_filler\n"
+        "name: office/pdf_form_filler\n"
         "version: 0.1.0\n"
         "description: Fills PDF forms.\n"
         "issuer:\n"
@@ -140,7 +140,7 @@ def test_cmd_list_filter_by_category(tmp_path):
         skill_dir.mkdir(parents=True)
         (skill_dir / "skill.py").touch()
         (skill_dir / "manifest.yaml").write_text(
-            f"name: {name}\nversion: 0.1.0\ndescription: Test.\n"
+            f"name: {category}/{name}\nversion: 0.1.0\ndescription: Test.\n"
         )
 
     buf = io.StringIO()
@@ -294,7 +294,7 @@ def _make_bundle(tmp_path, category, name, with_test=True):
     skill_dir.mkdir(parents=True)
     (skill_dir / "skill.py").touch()
     (skill_dir / "manifest.yaml").write_text(
-        f"name: {name}\nversion: 0.1.0\ndescription: Test.\n"
+        f"name: {category}/{name}\nversion: 0.1.0\ndescription: Test.\n"
     )
     if with_test:
         (skill_dir / "test_skill.py").touch()

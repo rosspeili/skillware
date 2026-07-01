@@ -185,6 +185,18 @@ To point the CLI at a persistent custom root, set the environment variable:
 Only skills with both `manifest.yaml` and `skill.py` present are shown —
 the same condition `SkillLoader` requires to load a skill successfully.
 
+### Skill ID vs manifest `name` vs LLM tool name
+
+| Concept | Source | Example (`office/pdf_form_filler`) |
+| :--- | :--- | :--- |
+| **CLI / loader ID** | Folder path `category/skill_name` | `office/pdf_form_filler` |
+| **`manifest.yaml` `name`** | Should match the registry ID | `office/pdf_form_filler` |
+| **Gemini / Claude tool name** | `manifest["name"]` via adapter | `office/pdf_form_filler` |
+| **OpenAI / DeepSeek tool name** | Sanitized adapter name | `office_pdf_form_filler` |
+| **Ollama prompt `"tool"`** | Same as manifest when using full IDs | `office/pdf_form_filler` |
+
+`skillware list` always shows the **path-derived ID**; it does not read `manifest["name"]` for the ID column. Keep manifest `name` aligned with that ID so agent loops and `SkillLoader.to_*_tool()` stay consistent. See [Agent loops](agent_loops.md#tool-name-matching).
+
 ## Color theme
 
 The CLI uses a pastel color palette consistent with the project's visual identity:

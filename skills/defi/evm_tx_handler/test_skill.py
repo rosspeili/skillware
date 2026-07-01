@@ -81,12 +81,13 @@ def manifest():
 
 def test_manifest_consistency(skill, manifest):
     assert skill.manifest["name"] == manifest["name"]
+    assert manifest["name"] == "defi/evm_tx_handler"
 
 
 def test_loader_loads_skill(monkeypatch):
     monkeypatch.setenv("AGENT_WALLET_PRIVATE_KEY", TEST_KEY)
     bundle = SkillLoader.load_skill("defi/evm_tx_handler")
-    assert bundle["manifest"]["name"] == "evm_tx_handler"
+    assert bundle["manifest"]["name"] == "defi/evm_tx_handler"
     cls = bundle["module"].EvmTxHandlerSkill
     instance = cls()
     assert (

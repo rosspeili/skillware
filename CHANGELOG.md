@@ -8,6 +8,11 @@ Contributors add user-facing entries under `[Unreleased]` in the same PR. Mainta
 
 ## [Unreleased]
 
+### Changed
+
+- **`office/pdf_form_filler`** and **`defi/evm_tx_handler`**: Align `manifest.yaml` `name` with registry paths (`office/pdf_form_filler`, `defi/evm_tx_handler`); update examples and docs to use manifest-derived tool dispatch (#201).
+- **Documentation**: Clarify skill ID vs manifest `name` vs provider tool names in `docs/usage/cli.md`, `docs/usage/agent_loops.md`, and `docs/introduction.md`; require full registry IDs in CONTRIBUTING manifest standard (#201).
+
 ## [0.4.0] - 2026-06-30
 
 ### Added
