@@ -207,7 +207,8 @@ Defines the tool interface, safety constitution, dependencies, and issuer attrib
 
 **Required fields and sections:**
 
-- `name`, `version`, `description`
+- `name` — registry skill ID in `category/skill_name` form; **must match** the folder path under `skills/` (same string as `SkillLoader.load_skill(...)` and the CLI `ID` column). Do not use a short name alone (for example `pdf_form_filler` without the `office/` prefix).
+- `version`, `description`
 - `issuer` — see [Issuer attribution](#issuer-attribution); `name` and `email` required, `github` and `org` optional
 - `short_description` — optional one-line summary (~80 chars) shown in `skillware list` when present
 - `parameters` — valid JSON Schema for LLM tool calling
@@ -222,7 +223,7 @@ Defines the tool interface, safety constitution, dependencies, and issuer attrib
 **Example:**
 
 ```yaml
-name: generic_hello
+name: category/generic_hello
 version: 1.0.0
 description: A friendly greeting skill.
 issuer:
@@ -334,7 +335,7 @@ Place each skill under one top-level directory under `skills/`. Use an existing 
 | `monitoring` | Agent loop observability, budget gates, task control | `token_limiter` |
 | `wellness` | Coaching guardrails, mental health support | `mental_coach` |
 
-Skill IDs follow `category/skill_name` and should match the path under `skills/`. For the live registry, see [Skill Library](docs/skills/README.md). Propose new top-level categories in an issue before adding a folder.
+Skill IDs follow `category/skill_name` and should match the path under `skills/` and the `name` field in `manifest.yaml`. For the live registry, see [Skill Library](docs/skills/README.md). Propose new top-level categories in an issue before adding a folder.
 
 ---
 

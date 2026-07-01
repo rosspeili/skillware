@@ -80,8 +80,8 @@ load_env_file()
 bundle = SkillLoader.load_skill("office/pdf_form_filler")
 skill = bundle["module"].PDFFormFillerSkill()
 client = genai.Client()
-# User: "Fill /path/to/form.pdf — name John Doe, check the terms box."
 tool = SkillLoader.to_gemini_tool(bundle)
+tool_name = bundle["manifest"]["name"]
 response = client.models.generate_content(
     model="gemini-2.5-flash",
     contents="Fill /path/to/form.pdf — name John Doe, check the terms box.",
@@ -91,7 +91,7 @@ response = client.models.generate_content(
     ),
 )
 for part in response.candidates[0].content.parts:
-    if part.function_call:
+    if part.function_call and part.function_call.name == tool_name:
         result = skill.execute(dict(part.function_call.args))
         follow_up = client.models.generate_content(
             model="gemini-2.5-flash",
@@ -161,6 +161,7 @@ client = OpenAI(
     api_key=os.environ.get("DEEPSEEK_API_KEY"),
     base_url="https://api.deepseek.com",
 )
+# Match tool_call.function.name to deepseek_tool["function"]["name"] (office_pdf_form_filler)
 ```
 
 ### Ollama
