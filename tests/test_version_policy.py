@@ -28,43 +28,55 @@ def test_get_installed_version_dev_returns_none(monkeypatch):
 
 
 def test_should_emit_only_below_min_unsupported():
+    assert version_policy.should_emit_unsupported_advisory(Version("0.2.9")) is True
     assert version_policy.should_emit_unsupported_advisory(Version("0.2.5")) is True
-    assert version_policy.should_emit_unsupported_advisory(Version("0.2.6")) is False
     assert version_policy.should_emit_unsupported_advisory(Version("0.3.0")) is False
-    assert version_policy.should_emit_unsupported_advisory(Version("0.3.1")) is False
+    assert version_policy.should_emit_unsupported_advisory(Version("0.3.4")) is False
+    assert version_policy.should_emit_unsupported_advisory(Version("0.3.5")) is False
 
 
 def test_emit_advisory_silent_for_current_release(monkeypatch, capsys):
     monkeypatch.setattr(
         version_policy.metadata,
         "version",
-        lambda _name: "0.3.1",
+        lambda _name: "0.4.0",
+    )
+    version_policy.emit_upgrade_advisory()
+    assert capsys.readouterr().err == ""
+
+
+def test_emit_advisory_silent_for_security_supported_floor(monkeypatch, capsys):
+    monkeypatch.setattr(
+        version_policy.metadata,
+        "version",
+        lambda _name: "0.3.5",
     )
     version_policy.emit_upgrade_advisory()
     assert capsys.readouterr().err == ""
 
 
 def test_emit_advisory_silent_for_outdated_but_supported_band(monkeypatch, capsys):
-    monkeypatch.setattr(
-        version_policy.metadata,
-        "version",
-        lambda _name: "0.3.0",
-    )
-    version_policy.emit_upgrade_advisory()
-    assert capsys.readouterr().err == ""
+    for version in ("0.3.0", "0.3.4"):
+        monkeypatch.setattr(
+            version_policy.metadata,
+            "version",
+            lambda _name, v=version: v,
+        )
+        version_policy.emit_upgrade_advisory()
+        assert capsys.readouterr().err == ""
 
 
 def test_emit_advisory_warns_for_unsupported(monkeypatch, capsys):
     monkeypatch.setattr(
         version_policy.metadata,
         "version",
-        lambda _name: "0.2.5",
+        lambda _name: "0.2.9",
     )
     version_policy.emit_upgrade_advisory()
     err = capsys.readouterr().err
-    assert "0.2.5" in err
+    assert "0.2.9" in err
     assert "unsupported" in err.lower()
-    assert ">=0.3.1" in err
+    assert ">=0.3.5" in err
 
 
 def test_emit_advisory_respects_opt_out(monkeypatch, capsys):
@@ -72,7 +84,7 @@ def test_emit_advisory_respects_opt_out(monkeypatch, capsys):
     monkeypatch.setattr(
         version_policy.metadata,
         "version",
-        lambda _name: "0.2.5",
+        lambda _name: "0.2.9",
     )
     version_policy.emit_upgrade_advisory()
     assert capsys.readouterr().err == ""

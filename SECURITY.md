@@ -6,9 +6,9 @@ Use a current Skillware release to receive security fixes. We patch vulnerabilit
 
 | Installed version | Security support | CLI advisory |
 | :--- | :--- | :--- |
-| **>= 0.3.1** | Supported. Security reports accepted and patched here. | Silent |
-| **0.2.6 – 0.3.0** | No security fixes. Upgrade recommended. | Silent (no upgrade spam) |
-| **< 0.2.6** (e.g. 0.2.5) | Unsupported. | One dim stderr message at CLI startup (in releases that ship this check) |
+| **>= 0.3.5** | Supported. Security reports accepted and patched here. | Silent |
+| **0.3.0 – 0.3.4** | No security fixes. Upgrade recommended. | Silent |
+| **< 0.3.0** (e.g. 0.2.9, 0.2.6) | Unsupported. | One dim stderr message at CLI startup (in releases that ship this check) |
 
 Thresholds are defined in `skillware/version_policy.py` (`MIN_SECURITY_SUPPORTED`, `MIN_UNSUPPORTED`) and bumped by maintainers when support windows change.
 
