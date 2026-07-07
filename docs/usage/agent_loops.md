@@ -3,7 +3,7 @@
 Every integration follows the same execution pattern:
 
 1. `bundle = SkillLoader.load_skill("<category>/<skill_name>")`
-2. `skill = bundle["module"].<SkillClass>()`
+2. `skill = bundle["class"]()` — or `SkillLoader.get_skill_class(bundle)()`; `bundle["module"]` remains available for backward compatibility.
 3. Adapt `bundle` for the model (`to_gemini_tool`, `to_claude_tool`, etc.).
 4. Pass `bundle["instructions"]` as system context.
 5. On tool call, `result = skill.execute(arguments)` and return JSON to the model.
@@ -30,8 +30,7 @@ Provider guides contain full API details. Skill pages contain copy-paste example
 from skillware.core.loader import SkillLoader
 
 bundle = SkillLoader.load_skill("compliance/tos_evaluator")
-SkillClass = bundle["module"].TOSEvaluatorSkill
-result = SkillClass().execute(
+result = bundle["class"]().execute(
     {
         "target_url": "https://example.com",
         "intended_action": "crawl documentation for research",

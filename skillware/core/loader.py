@@ -1,3 +1,4 @@
+import inspect
 import os
 import re
 import warnings
@@ -5,7 +6,7 @@ import yaml
 import json
 import importlib.util
 from pathlib import Path
-from typing import Dict, Any, List, Optional
+from typing import Dict, Any, List, Optional, Type
 
 
 class SkillwareIdentityWarning(UserWarning):
@@ -187,13 +188,51 @@ class SkillLoader:
         )
 
     @staticmethod
+    def _discover_skill_class(module: Any, skill_file: str) -> Type[Any]:
+        """
+        Return the single BaseSkill subclass defined in the loaded skill module.
+        """
+        from skillware.core.base_skill import BaseSkill
+
+        skill_classes = [
+            obj
+            for _, obj in inspect.getmembers(module, inspect.isclass)
+            if issubclass(obj, BaseSkill)
+            and obj is not BaseSkill
+            and obj.__module__ == module.__name__
+        ]
+        if len(skill_classes) == 1:
+            return skill_classes[0]
+        if not skill_classes:
+            raise ImportError(
+                f"Expected exactly one BaseSkill subclass in {skill_file}, found none."
+            )
+        names = [cls.__name__ for cls in skill_classes]
+        raise ImportError(
+            f"Expected exactly one BaseSkill subclass in {skill_file}, "
+            f"found: {names}"
+        )
+
+    @staticmethod
+    def get_skill_class(skill_bundle: Dict[str, Any]) -> Type[Any]:
+        """Return the BaseSkill subclass from a bundle produced by load_skill()."""
+        skill_class = skill_bundle.get("class")
+        if skill_class is None:
+            raise KeyError(
+                "Skill bundle has no 'class' key; load with SkillLoader.load_skill() first."
+            )
+        return skill_class
+
+    @staticmethod
     def load_skill(skill_path: str) -> Dict[str, Any]:
         """
         Loads a skill and returns a bundled object with:
-        - class: The Python class (uninstantiated)
+        - module: The loaded skill.py module
+        - class: The BaseSkill subclass (uninstantiated)
         - manifest: The YAML metadata
         - instructions: The system prompt content
         - card: The UI card definition
+        - registry_id: Path-derived registry ID when validation applies
         """
         resolved_path = SkillLoader._resolve_skill_path(skill_path)
         skill_path = str(resolved_path)
@@ -241,12 +280,10 @@ class SkillLoader:
         if spec and spec.loader:
             module = importlib.util.module_from_spec(spec)
             spec.loader.exec_module(module)
-            # Find the class that inherits from BaseSkill?
-            # For now assume the user looks for the exported class or we inspect.
-            # We'll just return the module and let the user instantiate the known class name
-            # or we could enforce a naming convention.
+            skill_class = SkillLoader._discover_skill_class(module, skill_file)
             return {
                 "module": module,
+                "class": skill_class,
                 "manifest": manifest,
                 "instructions": instructions,
                 "card": card,

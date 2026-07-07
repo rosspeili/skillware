@@ -247,7 +247,8 @@ requirements:
 
 ### 2. `skill.py` (logic)
 
-- Implement deterministic Python logic (planned: inherit from `BaseSkill` where applicable).
+- Define **exactly one** concrete subclass of `BaseSkill` per skill file. `SkillLoader.load_skill()` discovers it automatically as `bundle["class"]` (see `SkillLoader.get_skill_class()`).
+- Implement deterministic Python logic; inherit from `BaseSkill`.
 - Accept a dictionary of inputs; return a JSON-serializable dictionary.
 - Catch internal errors and return a structured error report; do not crash the host agent.
 - Do **not** print to stdout or stderr for normal operation.
