@@ -24,6 +24,61 @@ def test_load_skill_registry_has_manifest():
     bundle = SkillLoader.load_skill("optimization/prompt_rewriter")
     assert bundle["manifest"].get("name") == "optimization/prompt_rewriter"
     assert bundle["registry_id"] == "optimization/prompt_rewriter"
+    assert bundle["class"].__name__ == "PromptRewriter"
+    assert SkillLoader.get_skill_class(bundle) is bundle["class"]
+
+
+def test_load_skill_class_is_instantiable():
+    bundle = SkillLoader.load_skill("optimization/prompt_rewriter")
+    skill = bundle["class"]()
+    result = skill.execute({"raw_text": "hello world"})
+    assert "error" not in result
+
+
+def test_discover_skill_class_requires_exactly_one_subclass(tmp_path, monkeypatch):
+    skill_dir = tmp_path / "skills" / "broken" / "no_class"
+    skill_dir.mkdir(parents=True)
+    (skill_dir / "manifest.yaml").write_text(
+        "name: broken/no_class\nversion: 0.1.0\ndescription: test\n"
+        "parameters:\n  type: object\n  properties: {}\n",
+        encoding="utf-8",
+    )
+    (skill_dir / "skill.py").write_text(
+        "def helper():\n    return 1\n",
+        encoding="utf-8",
+    )
+    monkeypatch.chdir(tmp_path)
+    with pytest.raises(ImportError, match="found none"):
+        SkillLoader.load_skill("broken/no_class")
+
+
+def test_discover_skill_class_rejects_multiple_subclasses(tmp_path, monkeypatch):
+    skill_dir = tmp_path / "skills" / "broken" / "two_classes"
+    skill_dir.mkdir(parents=True)
+    (skill_dir / "manifest.yaml").write_text(
+        "name: broken/two_classes\nversion: 0.1.0\ndescription: test\n"
+        "parameters:\n  type: object\n  properties: {}\n",
+        encoding="utf-8",
+    )
+    (skill_dir / "skill.py").write_text(
+        "from skillware.core.base_skill import BaseSkill\n"
+        "class FirstSkill(BaseSkill):\n"
+        "    @property\n"
+        "    def manifest(self):\n"
+        "        return {}\n"
+        "    def execute(self, params):\n"
+        "        return {}\n"
+        "class SecondSkill(BaseSkill):\n"
+        "    @property\n"
+        "    def manifest(self):\n"
+        "        return {}\n"
+        "    def execute(self, params):\n"
+        "        return {}\n",
+        encoding="utf-8",
+    )
+    monkeypatch.chdir(tmp_path)
+    with pytest.raises(ImportError, match="found: \\['FirstSkill', 'SecondSkill'\\]"):
+        SkillLoader.load_skill("broken/two_classes")
 
 
 def test_load_skill_registry_id_matches_bundled_skills():
