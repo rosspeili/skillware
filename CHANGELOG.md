@@ -8,6 +8,10 @@ Contributors add user-facing entries under `[Unreleased]` in the same PR. Mainta
 
 ## [Unreleased]
 
+### Added
+
+- **`finance/uk_companies_house_handler`**: New skill for UK Companies House REST API — deterministic company search, profile, officers, PSC, filing history, and intent-to-operation mapping with UK corporate terminology translation; bundled endpoint index and terminology map; status-based response envelope (ready/needs_input/error) with disambiguation support.
+
 ### Changed
 
 - **Loader**: `SkillLoader.load_skill()` auto-discovers the single `BaseSkill` subclass in each `skill.py` and exposes it as `bundle["class"]`; `get_skill_class()` helper added. Existing `bundle["module"]` usage is unchanged (#89).
