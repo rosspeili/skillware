@@ -61,6 +61,9 @@ This skill requires no API keys or environment variables.
 
 Guides: [Usage index](../usage/README.md) - [Agent loops](../usage/agent_loops.md).
 
+
+Use `bundle["class"]()` in the snippets below; explicit `bundle["module"].ClassName()` also works.
+
 Sample user message: *Filter this dataset and keep only the chunks that contain new information.*
 
 ### Direct execute
@@ -69,7 +72,7 @@ Sample user message: *Filter this dataset and keep only the chunks that contain 
 from skillware.core.loader import SkillLoader
 
 bundle = SkillLoader.load_skill("data_engineering/novelty_extractor")
-skill = bundle["module"].NoveltyExtractor()
+skill = bundle["class"]()
 
 result = skill.execute({
     "dataset_chunk": "Bitcoin is going to rise.\n\nBitcoin will increase.\n\nThe sky is blue.",
@@ -86,7 +89,7 @@ print(result["redundant_chunks_dropped"])
 from skillware.core.loader import SkillLoader
 
 bundle = SkillLoader.load_skill("data_engineering/novelty_extractor")
-skill = bundle["module"].NoveltyExtractor()
+skill = bundle["class"]()
 
 result1 = skill.execute({
     "dataset_chunk": "first batch of text...",
@@ -112,7 +115,7 @@ from skillware.core.loader import SkillLoader
 
 load_env_file()
 bundle = SkillLoader.load_skill("data_engineering/novelty_extractor")
-skill = bundle["module"].NoveltyExtractor()
+skill = bundle["class"]()
 client = genai.Client()
 tool = SkillLoader.to_gemini_tool(bundle)
 response = client.models.generate_content(
@@ -138,7 +141,7 @@ from skillware.core.loader import SkillLoader
 
 load_env_file()
 bundle = SkillLoader.load_skill("data_engineering/novelty_extractor")
-skill = bundle["module"].NoveltyExtractor()
+skill = bundle["class"]()
 client = anthropic.Anthropic()
 tools = [SkillLoader.to_claude_tool(bundle)]
 # On tool_use (name data_engineering/novelty_extractor): skill.execute(tool_use.input)
@@ -153,7 +156,7 @@ from skillware.core.loader import SkillLoader
 
 load_env_file()
 bundle = SkillLoader.load_skill("data_engineering/novelty_extractor")
-skill = bundle["module"].NoveltyExtractor()
+skill = bundle["class"]()
 client = OpenAI()
 openai_tool = SkillLoader.to_openai_tool(bundle)
 # Match tool_call.function.name (data_engineering_novelty_extractor)
@@ -169,7 +172,7 @@ from skillware.core.loader import SkillLoader
 
 load_env_file()
 bundle = SkillLoader.load_skill("data_engineering/novelty_extractor")
-skill = bundle["module"].NoveltyExtractor()
+skill = bundle["class"]()
 client = OpenAI(
     api_key=os.environ.get("DEEPSEEK_API_KEY"),
     base_url="https://api.deepseek.com",

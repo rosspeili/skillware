@@ -59,8 +59,8 @@ Configure values per [API keys for skills](../usage/api_keys.md). The core polic
 from skillware.core.loader import SkillLoader
 
 bundle = SkillLoader.load_skill("compliance/tos_evaluator")
-TOSEvaluatorSkill = bundle["module"].TOSEvaluatorSkill
-skill = TOSEvaluatorSkill()
+skill = bundle["class"]()
+# Or: skill = bundle["module"].TOSEvaluatorSkill()
 
 result = skill.execute(
     {
@@ -79,6 +79,9 @@ print(result["reason"])
 ## Usage Examples
 
 Guides: [Usage index](../usage/README.md) · [Agent loops](../usage/agent_loops.md) · [API keys](../usage/api_keys.md) (optional `GOOGLE_API_KEY` for the LLM evaluator path).
+
+
+Use `bundle["class"]()` in the snippets below; explicit `bundle["module"].ClassName()` also works.
 
 Sample user message: *Before crawling https://example.com/docs, check if automated indexing is allowed.*
 
@@ -105,7 +108,7 @@ from skillware.core.loader import SkillLoader
 
 load_env_file()
 bundle = SkillLoader.load_skill("compliance/tos_evaluator")
-skill = bundle["module"].TOSEvaluatorSkill()
+skill = bundle["class"]()
 tool = SkillLoader.to_gemini_tool(bundle)
 client = genai.Client()
 response = client.models.generate_content(
@@ -148,7 +151,7 @@ from skillware.core.loader import SkillLoader
 
 load_env_file()
 bundle = SkillLoader.load_skill("compliance/tos_evaluator")
-skill = bundle["module"].TOSEvaluatorSkill()
+skill = bundle["class"]()
 client = anthropic.Anthropic(api_key=os.environ.get("ANTHROPIC_API_KEY"))
 tools = [SkillLoader.to_claude_tool(bundle)]
 # messages.create(..., system=bundle["instructions"], tools=tools)
@@ -165,7 +168,7 @@ from skillware.core.loader import SkillLoader
 
 load_env_file()
 bundle = SkillLoader.load_skill("compliance/tos_evaluator")
-skill = bundle["module"].TOSEvaluatorSkill()
+skill = bundle["class"]()
 openai_tool = SkillLoader.to_openai_tool(bundle)
 client = OpenAI(api_key=os.environ.get("OPENAI_API_KEY"))
 # chat.completions.create(model="gpt-4o", tools=[openai_tool], ...)
@@ -182,7 +185,7 @@ from skillware.core.loader import SkillLoader
 
 load_env_file()
 bundle = SkillLoader.load_skill("compliance/tos_evaluator")
-skill = bundle["module"].TOSEvaluatorSkill()
+skill = bundle["class"]()
 deepseek_tool = SkillLoader.to_deepseek_tool(bundle)
 client = OpenAI(
     api_key=os.environ.get("DEEPSEEK_API_KEY"),

@@ -57,6 +57,9 @@ Configure per [API keys for skills](../usage/api_keys.md). The token can also be
 
 Guides: [Usage index](../usage/README.md) · [Agent loops](../usage/agent_loops.md) · [API keys](../usage/api_keys.md).
 
+
+Use `bundle["class"]()` in the snippets below; explicit `bundle["module"].ClassName()` also works.
+
 Sample user message: *Analyse issue #56 in ARPAHLS/skillware and produce a resolution plan.*
 
 ### Runnable examples
@@ -77,7 +80,7 @@ See [examples/README.md](../../examples/README.md) and [Agent loops](../usage/ag
 from skillware.core.loader import SkillLoader
 
 bundle = SkillLoader.load_skill("dev_tools/issue_resolver")
-skill = bundle["module"].IssueResolverSkill()
+skill = bundle["class"]()
 result = skill.execute({
     "issue_url": "https://github.com/owner/repo/issues/42",
     "extra_instructions": "Follow PEP 8. Do not bump the package version.",
@@ -99,7 +102,7 @@ from skillware.core.loader import SkillLoader
 
 load_env_file()
 bundle = SkillLoader.load_skill("dev_tools/issue_resolver")
-skill = bundle["module"].IssueResolverSkill()
+skill = bundle["class"]()
 client = genai.Client()
 tool_decl = SkillLoader.to_gemini_tool(bundle)
 tool_decl["name"] = SkillLoader._sanitize_function_tool_name("dev_tools/issue_resolver")
@@ -144,7 +147,7 @@ from skillware.core.loader import SkillLoader
 
 load_env_file()
 bundle = SkillLoader.load_skill("dev_tools/issue_resolver")
-skill = bundle["module"].IssueResolverSkill()
+skill = bundle["class"]()
 client = anthropic.Anthropic(api_key=os.environ.get("ANTHROPIC_API_KEY"))
 tools = [SkillLoader.to_claude_tool(bundle)]
 response = client.messages.create(
@@ -170,7 +173,7 @@ from skillware.core.loader import SkillLoader
 
 load_env_file()
 bundle = SkillLoader.load_skill("dev_tools/issue_resolver")
-skill = bundle["module"].IssueResolverSkill()
+skill = bundle["class"]()
 client = OpenAI(api_key=os.environ.get("OPENAI_API_KEY"))
 openai_tool = SkillLoader.to_openai_tool(bundle)
 response = client.chat.completions.create(
@@ -194,7 +197,7 @@ from skillware.core.loader import SkillLoader
 
 load_env_file()
 bundle = SkillLoader.load_skill("dev_tools/issue_resolver")
-skill = bundle["module"].IssueResolverSkill()
+skill = bundle["class"]()
 deepseek_tool = SkillLoader.to_deepseek_tool(bundle)
 client = OpenAI(
     api_key=os.environ.get("DEEPSEEK_API_KEY"),

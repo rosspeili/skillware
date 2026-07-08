@@ -56,6 +56,9 @@ Copy `skills/defi/evm_tx_handler/config.yaml.example` to `config.yaml` in the sa
 
 Guides: [Usage index](../usage/README.md) · [Agent loops](../usage/agent_loops.md) · [API keys](../usage/api_keys.md).
 
+
+Use `bundle["class"]()` in the snippets below; explicit `bundle["module"].ClassName()` also works.
+
 Sample user message: *“Buy 10 DEGEN on Base with USDC”* → `resolve` → `quote` → `preview` → user confirms → `execute` with `confirmed: true`.
 
 ### Runnable examples
@@ -80,7 +83,7 @@ from skillware.core.loader import SkillLoader
 
 load_env_file()
 bundle = SkillLoader.load_skill("defi/evm_tx_handler")
-skill = bundle["module"].EvmTxHandlerSkill()
+skill = bundle["class"]()
 client = genai.Client()
 tool = SkillLoader.to_gemini_tool(bundle)
 
@@ -116,7 +119,7 @@ from skillware.core.loader import SkillLoader
 
 load_env_file()
 bundle = SkillLoader.load_skill("defi/evm_tx_handler")
-skill = bundle["module"].EvmTxHandlerSkill()
+skill = bundle["class"]()
 client = anthropic.Anthropic(api_key=os.environ.get("ANTHROPIC_API_KEY"))
 tools = [SkillLoader.to_claude_tool(bundle)]
 
@@ -136,7 +139,7 @@ from skillware.core.loader import SkillLoader
 
 load_env_file()
 bundle = SkillLoader.load_skill("defi/evm_tx_handler")
-skill = bundle["module"].EvmTxHandlerSkill()
+skill = bundle["class"]()
 openai_tool = SkillLoader.to_openai_tool(bundle)
 client = OpenAI(api_key=os.environ.get("OPENAI_API_KEY"))
 # Match tool_call.function.name to openai_tool["function"]["name"] (defi_evm_tx_handler)
@@ -152,7 +155,7 @@ from skillware.core.loader import SkillLoader
 
 load_env_file()
 bundle = SkillLoader.load_skill("defi/evm_tx_handler")
-skill = bundle["module"].EvmTxHandlerSkill()
+skill = bundle["class"]()
 deepseek_tool = SkillLoader.to_deepseek_tool(bundle)
 client = OpenAI(
     api_key=os.environ.get("DEEPSEEK_API_KEY"),

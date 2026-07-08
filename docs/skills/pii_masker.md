@@ -61,6 +61,9 @@ The `micro-f1-mask` model detects a variety of entities, including but not limit
 
 Guides: [Usage index](../usage/README.md) · [Agent loops](../usage/agent_loops.md). Skill execution uses local Ollama (`arpacorp/micro-f1-mask`); no cloud agent key required for the masker itself.
 
+
+Use `bundle["class"]()` in the snippets below; explicit `bundle["module"].ClassName()` also works.
+
 ### Runnable examples
 
 See [examples/README.md](../../examples/README.md) for the current runnable-script inventory. The dedicated runnable example for this skill is `examples/pii_guardrail_flow.py`, which demonstrates the local execute path rather than a full provider loop.
@@ -73,7 +76,7 @@ Sample user message: *Mask PII in: "Hello John Doe, your wallet 0xabc123 has bee
 from skillware.core.loader import SkillLoader
 
 bundle = SkillLoader.load_skill("compliance/pii_masker")
-skill = bundle["module"].PIIMaskerSkill()
+skill = bundle["class"]()
 result = skill.execute({
     "text": "Hello John Doe, your wallet 0xabc123 has been verified.",
     "mode": "mask",
@@ -92,7 +95,7 @@ from skillware.core.loader import SkillLoader
 
 load_env_file()
 bundle = SkillLoader.load_skill("compliance/pii_masker")
-skill = bundle["module"].PIIMaskerSkill()
+skill = bundle["class"]()
 client = genai.Client()
 tool = SkillLoader.to_gemini_tool(bundle)
 response = client.models.generate_content(
@@ -135,7 +138,7 @@ from skillware.core.loader import SkillLoader
 
 load_env_file()
 bundle = SkillLoader.load_skill("compliance/pii_masker")
-skill = bundle["module"].PIIMaskerSkill()
+skill = bundle["class"]()
 client = anthropic.Anthropic(api_key=os.environ.get("ANTHROPIC_API_KEY"))
 tools = [SkillLoader.to_claude_tool(bundle)]
 # On tool_use (name compliance/pii_masker): skill.execute(tool_use.input)
@@ -151,7 +154,7 @@ from skillware.core.loader import SkillLoader
 
 load_env_file()
 bundle = SkillLoader.load_skill("compliance/pii_masker")
-skill = bundle["module"].PIIMaskerSkill()
+skill = bundle["class"]()
 openai_tool = SkillLoader.to_openai_tool(bundle)
 client = OpenAI(api_key=os.environ.get("OPENAI_API_KEY"))
 # Match tool_call.function.name (compliance_pii_masker)
@@ -167,7 +170,7 @@ from skillware.core.loader import SkillLoader
 
 load_env_file()
 bundle = SkillLoader.load_skill("compliance/pii_masker")
-skill = bundle["module"].PIIMaskerSkill()
+skill = bundle["class"]()
 deepseek_tool = SkillLoader.to_deepseek_tool(bundle)
 client = OpenAI(
     api_key=os.environ.get("DEEPSEEK_API_KEY"),

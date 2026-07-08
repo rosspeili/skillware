@@ -53,7 +53,7 @@ Browse capabilities by category in the [Skill library](docs/skills/README.md) or
 
 ```mermaid
 flowchart LR
-    Registry[(Registry)] -->|Load| Loader[Loader]
+    Registry[Registry] -->|Load| Loader[Loader]
     Loader -->|Adapt| Host[Host]
     Host -->|Prompt + Tools| LogicalSystems([Logical Systems])
     LogicalSystems -->|Tool Call| Host
@@ -167,9 +167,10 @@ load_env_file()
 # 1. Load the Skill from the Registry
 # The loader reads the code, manifest, and instructions automatically
 skill_bundle = SkillLoader.load_skill("finance/wallet_screening")
-skill = skill_bundle["module"].WalletScreeningSkill(
+skill = skill_bundle["class"](
     config={"ETHERSCAN_API_KEY": os.environ.get("ETHERSCAN_API_KEY")}
 )
+# Or: skill = skill_bundle["module"].WalletScreeningSkill(config={...})
 
 # 2. Client & Tool Setup
 client = genai.Client()

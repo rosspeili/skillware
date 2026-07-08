@@ -54,6 +54,9 @@ Agent loops also need a provider API key (for example `GOOGLE_API_KEY` with Gemi
 
 Guides: [Usage index](../usage/README.md) · [Agent loops](../usage/agent_loops.md) · [API keys](../usage/api_keys.md).
 
+
+Use `bundle["class"]()` in the snippets below; explicit `bundle["module"].ClassName()` also works.
+
 Sample user message: *Who is the CEO of BP?*
 
 ### Gemini
@@ -67,7 +70,7 @@ from skillware.core.loader import SkillLoader
 
 load_env_file()
 bundle = SkillLoader.load_skill("finance/uk_companies_house_handler")
-skill = bundle["module"].UkCompaniesHouseHandlerSkill(
+skill = bundle["class"](
     config={"COMPANIES_HOUSE_API_KEY": os.environ.get("COMPANIES_HOUSE_API_KEY")}
 )
 client = genai.Client()
@@ -115,7 +118,7 @@ from skillware.core.loader import SkillLoader
 
 load_env_file()
 bundle = SkillLoader.load_skill("finance/uk_companies_house_handler")
-skill = bundle["module"].UkCompaniesHouseHandlerSkill(
+skill = bundle["class"](
     config={"COMPANIES_HOUSE_API_KEY": os.environ.get("COMPANIES_HOUSE_API_KEY")}
 )
 client = anthropic.Anthropic(api_key=os.environ.get("ANTHROPIC_API_KEY"))
@@ -135,7 +138,7 @@ from skillware.core.loader import SkillLoader
 
 load_env_file()
 bundle = SkillLoader.load_skill("finance/uk_companies_house_handler")
-skill = bundle["module"].UkCompaniesHouseHandlerSkill(
+skill = bundle["class"](
     config={"COMPANIES_HOUSE_API_KEY": os.environ.get("COMPANIES_HOUSE_API_KEY")}
 )
 openai_tool = SkillLoader.to_openai_tool(bundle)
@@ -154,7 +157,7 @@ from skillware.core.loader import SkillLoader
 
 load_env_file()
 bundle = SkillLoader.load_skill("finance/uk_companies_house_handler")
-skill = bundle["module"].UkCompaniesHouseHandlerSkill(
+skill = bundle["class"](
     config={"COMPANIES_HOUSE_API_KEY": os.environ.get("COMPANIES_HOUSE_API_KEY")}
 )
 deepseek_tool = SkillLoader.to_deepseek_tool(bundle)
