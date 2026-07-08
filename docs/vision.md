@@ -64,7 +64,7 @@ Skillware follows one thread: modular capability you can install, trust, and ext
 
 **Self-contained, deterministic skills for any LLM or agent**
 
-**In short:** A public registry, a stable loader, model adapters, tests, and docs. Install a skill and call it from any major LLM runtime. **You are here** (v0.3.x).
+**In short:** A public registry, a stable loader, model adapters, tests, and docs. Install a skill and call it from any major LLM runtime. **You are here** (v0.4.x).
 
 **Example:** Your agent runs `pip install skillware`, loads a Terms-of-Service evaluator skill, then visits a site or ingests a document. It follows the skill's constitution and logic immediately: what to extract, what to flag, what never to scrape or store. No extra prompt engineering, no one-off tools, no separate subscription stack. The capability ships as one bundle.
 
@@ -102,12 +102,12 @@ Skillware follows one thread: modular capability you can install, trust, and ext
 
 ## Where we are today
 
-Honest snapshot for **v0** (current v0.3.x line):
+Honest snapshot for **v0** (current v0.4.x line):
 
 - **Registry**: Skills under `skills/` with docs in [docs/skills/](skills/README.md).
-- **Loader**: Dynamic import, dependency checks, and adapters for major LLM tool formats.
+- **Loader**: Dynamic import, auto-discovered `bundle["class"]`, dependency checks, and adapters for major LLM tool formats.
 - **CLI**: `skillware list`, `skillware test`, and an interactive menu, included with `pip install skillware`. Use `skillware list --examples` and `skillware examples` to browse the runnable script index from the terminal.
-- **Active work**: Wallet screening enhancements ([RFC #115](https://github.com/ARPAHLS/skillware/issues/115)), CLI polish, contributor docs, and good first issues across docs and framework.
+- **Active work**: Wallet screening enhancements ([RFC #115](https://github.com/ARPAHLS/skillware/issues/115)), contributor docs, and good first issues across docs and framework.
 
 Browse [open good first issues](https://github.com/ARPAHLS/skillware/issues?q=is%3Aopen+label%3A%22good+first+issue%22) if you want a low-risk entry point.
 

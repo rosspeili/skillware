@@ -64,6 +64,9 @@ Indicative USD rates live in `skills/monitoring/token_limiter/data/model_pricing
 
 Guides: [Usage index](../usage/README.md) · [Agent loops](../usage/agent_loops.md). No skill-specific API keys.
 
+
+Use `bundle["class"]()` in the snippets below; explicit `bundle["module"].ClassName()` also works.
+
 Sample user message: *Check whether task `scrape_amazon_listings_101` should continue; it has used 125000 tokens with a 100000 limit.*
 
 ### Runnable examples
@@ -84,7 +87,7 @@ See [examples/README.md](../../examples/README.md) and [Agent loops](../usage/ag
 from skillware.core.loader import SkillLoader
 
 bundle = SkillLoader.load_skill("monitoring/token_limiter")
-skill = bundle["module"].TokenLimiterSkill()
+skill = bundle["class"]()
 result = skill.execute({
     "task_id": "scrape_amazon_listings_101",
     "current_token_count": 125_000,
@@ -106,7 +109,7 @@ from skillware.core.loader import SkillLoader
 
 load_env_file()
 bundle = SkillLoader.load_skill("monitoring/token_limiter")
-skill = bundle["module"].TokenLimiterSkill()
+skill = bundle["class"]()
 client = genai.Client()
 tool_decl = SkillLoader.to_gemini_tool(bundle)
 tool_decl["name"] = SkillLoader._sanitize_function_tool_name("monitoring/token_limiter")
@@ -137,7 +140,7 @@ from skillware.core.loader import SkillLoader
 
 load_env_file()
 bundle = SkillLoader.load_skill("monitoring/token_limiter")
-skill = bundle["module"].TokenLimiterSkill()
+skill = bundle["class"]()
 client = anthropic.Anthropic(api_key=os.environ.get("ANTHROPIC_API_KEY"))
 tools = [SkillLoader.to_claude_tool(bundle)]
 response = client.messages.create(
@@ -168,7 +171,7 @@ from skillware.core.loader import SkillLoader
 
 load_env_file()
 bundle = SkillLoader.load_skill("monitoring/token_limiter")
-skill = bundle["module"].TokenLimiterSkill()
+skill = bundle["class"]()
 client = OpenAI(api_key=os.environ.get("OPENAI_API_KEY"))
 tool = SkillLoader.to_openai_tool(bundle)
 response = client.chat.completions.create(
@@ -202,7 +205,7 @@ from skillware.core.loader import SkillLoader
 
 load_env_file()
 bundle = SkillLoader.load_skill("monitoring/token_limiter")
-skill = bundle["module"].TokenLimiterSkill()
+skill = bundle["class"]()
 client = OpenAI(
     api_key=os.environ.get("DEEPSEEK_API_KEY"),
     base_url="https://api.deepseek.com",
@@ -236,7 +239,7 @@ import json
 from skillware.core.loader import SkillLoader
 
 bundle = SkillLoader.load_skill("monitoring/token_limiter")
-skill = bundle["module"].TokenLimiterSkill()
+skill = bundle["class"]()
 prompt = (
     "You may call tools as JSON blocks.\n"
     f"Tool: {bundle['manifest']['name']}\n"

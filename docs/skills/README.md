@@ -81,7 +81,9 @@ Registry skills live under `skills/<category>/<skill_name>/` in the repository a
 from skillware.core.loader import SkillLoader
 
 # Load by registry ID (category/skill_name)
-skill = SkillLoader.load_skill("finance/wallet_screening")
+bundle = SkillLoader.load_skill("finance/wallet_screening")
+skill = bundle["class"]()
+# Or: skill = bundle["module"].WalletScreeningSkill()
 ```
 
 ---

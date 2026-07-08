@@ -80,8 +80,8 @@ from skillware.core.loader import SkillLoader
 load_env_file()
 
 bundle = SkillLoader.load_skill("compliance/tos_evaluator")
-SkillClass = bundle["module"].TOSEvaluatorSkill
-skill = SkillClass()
+skill = bundle["class"]()
+# Or: SkillClass = bundle["module"].TOSEvaluatorSkill; skill = SkillClass()
 
 openai_tool = SkillLoader.to_openai_tool(bundle)
 tool_name = openai_tool["function"]["name"]

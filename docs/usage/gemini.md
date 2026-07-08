@@ -20,9 +20,10 @@ from google.genai import types
 
 # Load & Convert
 skill = SkillLoader.load_skill("finance/wallet_screening")
-skill_instance = skill["module"].WalletScreeningSkill(
+skill_instance = skill["class"](
     config={"ETHERSCAN_API_KEY": os.environ.get("ETHERSCAN_API_KEY")}
 )
+# Or: skill_instance = skill["module"].WalletScreeningSkill(config={...})
 tool = SkillLoader.to_gemini_tool(skill)
 
 # Initialize the google-genai client
@@ -125,10 +126,11 @@ rewriter = SkillLoader.load_skill("optimization/prompt_rewriter")
 sys_prompt = "You are a very helpful assistant serving a bank..."
 
 # Use python logic offline before starting the chat session
-optimized_ctx_result = rewriter['module'].PromptRewriter().execute({
+optimized_ctx_result = rewriter["class"]().execute({
     "raw_text": sys_prompt,
     "compression_aggression": "high"
 })
+# Or: rewriter["module"].PromptRewriter().execute({...})
 
 response = client.models.generate_content(
     model='gemini-2.5-flash',

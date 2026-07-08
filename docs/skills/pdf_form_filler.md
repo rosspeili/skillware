@@ -44,6 +44,9 @@ Configure values per [API keys for skills](../usage/api_keys.md).
 
 Guides: [Usage index](../usage/README.md) · [Agent loops](../usage/agent_loops.md) · [API keys](../usage/api_keys.md).
 
+
+Use `bundle["class"]()` in the snippets below; explicit `bundle["module"].ClassName()` also works.
+
 ### Runnable examples
 
 See [examples/README.md](../../examples/README.md) for the current runnable-script inventory. The dedicated runnable scripts today are `examples/gemini_pdf_form_filler.py` and `examples/claude_pdf_form_filler.py`. The OpenAI, DeepSeek, and Ollama sections below are catalog snippets only unless separate runnable examples are added later.
@@ -59,7 +62,7 @@ See [examples/README.md](../../examples/README.md) for the current runnable-scri
 from skillware.core.loader import SkillLoader
 
 bundle = SkillLoader.load_skill("office/pdf_form_filler")
-filler = bundle["module"].PDFFormFillerSkill()
+filler = bundle["class"]()
 result = filler.execute({
     "pdf_path": "/absolute/path/to/form.pdf",
     "instructions": "Name: John Doe. Check the terms of service box.",
@@ -78,7 +81,7 @@ from skillware.core.loader import SkillLoader
 
 load_env_file()
 bundle = SkillLoader.load_skill("office/pdf_form_filler")
-skill = bundle["module"].PDFFormFillerSkill()
+skill = bundle["class"]()
 client = genai.Client()
 tool = SkillLoader.to_gemini_tool(bundle)
 tool_name = bundle["manifest"]["name"]
@@ -122,7 +125,7 @@ from skillware.core.loader import SkillLoader
 
 load_env_file()
 bundle = SkillLoader.load_skill("office/pdf_form_filler")
-skill = bundle["module"].PDFFormFillerSkill()
+skill = bundle["class"]()
 client = anthropic.Anthropic(api_key=os.environ.get("ANTHROPIC_API_KEY"))
 tools = [SkillLoader.to_claude_tool(bundle)]
 # On tool_use, match name against bundle["manifest"]["name"] (office/pdf_form_filler):
@@ -139,7 +142,7 @@ from skillware.core.loader import SkillLoader
 
 load_env_file()
 bundle = SkillLoader.load_skill("office/pdf_form_filler")
-skill = bundle["module"].PDFFormFillerSkill()
+skill = bundle["class"]()
 openai_tool = SkillLoader.to_openai_tool(bundle)
 client = OpenAI(api_key=os.environ.get("OPENAI_API_KEY"))
 # Match tool_call.function.name to openai_tool["function"]["name"] (office_pdf_form_filler)
@@ -155,7 +158,7 @@ from skillware.core.loader import SkillLoader
 
 load_env_file()
 bundle = SkillLoader.load_skill("office/pdf_form_filler")
-skill = bundle["module"].PDFFormFillerSkill()
+skill = bundle["class"]()
 deepseek_tool = SkillLoader.to_deepseek_tool(bundle)
 client = OpenAI(
     api_key=os.environ.get("DEEPSEEK_API_KEY"),

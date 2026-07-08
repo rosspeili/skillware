@@ -42,6 +42,9 @@ Configure values per [API keys for skills](../usage/api_keys.md). Internal gener
 
 Guides: [Usage index](../usage/README.md) · [Agent loops](../usage/agent_loops.md) · [API keys](../usage/api_keys.md).
 
+
+Use `bundle["class"]()` in the snippets below; explicit `bundle["module"].ClassName()` also works.
+
 Sample user message: *Generate five high-entropy medical coding dispute samples with dual-insurance edge cases.*
 
 ### Runnable examples
@@ -54,7 +57,7 @@ See [examples/README.md](../../examples/README.md) for the current runnable-scri
 from skillware.core.loader import SkillLoader
 
 bundle = SkillLoader.load_skill("data_engineering/synthetic_generator")
-skill = bundle["module"].SyntheticGeneratorSkill()
+skill = bundle["class"]()
 result = skill.execute({
     "domain": "medical_coding_disputes",
     "num_samples": 5,
@@ -76,7 +79,7 @@ from skillware.core.loader import SkillLoader
 
 load_env_file()
 bundle = SkillLoader.load_skill("data_engineering/synthetic_generator")
-skill = bundle["module"].SyntheticGeneratorSkill()
+skill = bundle["class"]()
 client = genai.Client()
 tool = SkillLoader.to_gemini_tool(bundle)
 response = client.models.generate_content(
@@ -119,7 +122,7 @@ from skillware.core.loader import SkillLoader
 
 load_env_file()
 bundle = SkillLoader.load_skill("data_engineering/synthetic_generator")
-skill = bundle["module"].SyntheticGeneratorSkill()
+skill = bundle["class"]()
 client = anthropic.Anthropic(api_key=os.environ.get("ANTHROPIC_API_KEY"))
 tools = [SkillLoader.to_claude_tool(bundle)]
 # On tool_use (name data_engineering/synthetic_generator): skill.execute(tool_use.input)
@@ -135,7 +138,7 @@ from skillware.core.loader import SkillLoader
 
 load_env_file()
 bundle = SkillLoader.load_skill("data_engineering/synthetic_generator")
-skill = bundle["module"].SyntheticGeneratorSkill()
+skill = bundle["class"]()
 openai_tool = SkillLoader.to_openai_tool(bundle)
 client = OpenAI(api_key=os.environ.get("OPENAI_API_KEY"))
 # Match tool_call.function.name (data_engineering_synthetic_generator)
@@ -151,7 +154,7 @@ from skillware.core.loader import SkillLoader
 
 load_env_file()
 bundle = SkillLoader.load_skill("data_engineering/synthetic_generator")
-skill = bundle["module"].SyntheticGeneratorSkill()
+skill = bundle["class"]()
 deepseek_tool = SkillLoader.to_deepseek_tool(bundle)
 client = OpenAI(
     api_key=os.environ.get("DEEPSEEK_API_KEY"),

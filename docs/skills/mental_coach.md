@@ -44,7 +44,7 @@ Configure values per [API keys for skills](../usage/api_keys.md). Core crisis an
 from skillware.core.loader import SkillLoader
 
 bundle = SkillLoader.load_skill("wellness/mental_coach")
-skill = bundle["module"].MentalCoachSkill()
+skill = bundle["class"]()
 
 result = skill.execute(
     {
@@ -68,6 +68,9 @@ See [examples/mental_coach_demo.py](../../examples/mental_coach_demo.py) for loc
 
 Guides: [Usage index](../usage/README.md) · [Agent loops](../usage/agent_loops.md) · [API keys](../usage/api_keys.md) (optional `GOOGLE_API_KEY` for evaluator).
 
+
+Use `bundle["class"]()` in the snippets below; explicit `bundle["module"].ClassName()` also works.
+
 Sample user message: *I feel stressed at work and need coping strategies.*
 
 ### Gemini
@@ -80,7 +83,7 @@ from skillware.core.loader import SkillLoader
 
 load_env_file()
 bundle = SkillLoader.load_skill("wellness/mental_coach")
-skill = bundle["module"].MentalCoachSkill()
+skill = bundle["class"]()
 tool = SkillLoader.to_gemini_tool(bundle)
 client = genai.Client()
 response = client.models.generate_content(
@@ -106,7 +109,7 @@ from skillware.core.loader import SkillLoader
 
 load_env_file()
 bundle = SkillLoader.load_skill("wellness/mental_coach")
-skill = bundle["module"].MentalCoachSkill()
+skill = bundle["class"]()
 client = anthropic.Anthropic()
 tools = [SkillLoader.to_claude_tool(bundle)]
 # On tool_use (name wellness/mental_coach): skill.execute(tool_use.input)
@@ -121,7 +124,7 @@ from skillware.core.loader import SkillLoader
 
 load_env_file()
 bundle = SkillLoader.load_skill("wellness/mental_coach")
-skill = bundle["module"].MentalCoachSkill()
+skill = bundle["class"]()
 client = OpenAI()
 openai_tool = SkillLoader.to_openai_tool(bundle)
 # Match tool_call.function.name (wellness_mental_coach)
@@ -137,7 +140,7 @@ from skillware.core.loader import SkillLoader
 
 load_env_file()
 bundle = SkillLoader.load_skill("wellness/mental_coach")
-skill = bundle["module"].MentalCoachSkill()
+skill = bundle["class"]()
 client = OpenAI(
     api_key=os.environ.get("DEEPSEEK_API_KEY"),
     base_url="https://api.deepseek.com",

@@ -48,6 +48,9 @@ Configure values per [API keys for skills](../usage/api_keys.md).
 
 Guides: [Usage index](../usage/README.md) · [Agent loops](../usage/agent_loops.md) · [API keys](../usage/api_keys.md).
 
+
+Use `bundle["class"]()` in the snippets below; explicit `bundle["module"].ClassName()` also works.
+
 ### Runnable examples
 
 See [examples/README.md](../../examples/README.md) for the current runnable-script inventory. The runnable scripts currently checked in for this skill are `examples/mica_rag_flow.py`, `examples/mica_claude_flow.py`, and `examples/mica_ollama_flow.py`.
@@ -66,7 +69,7 @@ Sample user message: *Can I issue a stablecoin backed by physical art under an e
 from skillware.core.loader import SkillLoader
 
 bundle = SkillLoader.load_skill("compliance/mica_module")
-skill = bundle["module"].MiCAModuleSkill()
+skill = bundle["class"]()
 result = skill.execute({
     "user_prompt": "Can I issue a stablecoin backed by physical art under an e-money license?",
     "run_evaluator": True,
@@ -86,7 +89,7 @@ from skillware.core.loader import SkillLoader
 
 load_env_file()
 bundle = SkillLoader.load_skill("compliance/mica_module")
-skill = bundle["module"].MiCAModuleSkill()
+skill = bundle["class"]()
 client = genai.Client()
 tool = SkillLoader.to_gemini_tool(bundle)
 response = client.models.generate_content(
@@ -129,7 +132,7 @@ from skillware.core.loader import SkillLoader
 
 load_env_file()
 bundle = SkillLoader.load_skill("compliance/mica_module")
-skill = bundle["module"].MiCAModuleSkill()
+skill = bundle["class"]()
 client = anthropic.Anthropic(api_key=os.environ.get("ANTHROPIC_API_KEY"))
 tools = [SkillLoader.to_claude_tool(bundle)]
 # See examples/mica_claude_flow.py for the full loop
@@ -145,7 +148,7 @@ from skillware.core.loader import SkillLoader
 
 load_env_file()
 bundle = SkillLoader.load_skill("compliance/mica_module")
-skill = bundle["module"].MiCAModuleSkill()
+skill = bundle["class"]()
 openai_tool = SkillLoader.to_openai_tool(bundle)
 client = OpenAI(api_key=os.environ.get("OPENAI_API_KEY"))
 # Match tool_call.function.name (compliance_mica_module)
@@ -161,7 +164,7 @@ from skillware.core.loader import SkillLoader
 
 load_env_file()
 bundle = SkillLoader.load_skill("compliance/mica_module")
-skill = bundle["module"].MiCAModuleSkill()
+skill = bundle["class"]()
 deepseek_tool = SkillLoader.to_deepseek_tool(bundle)
 client = OpenAI(
     api_key=os.environ.get("DEEPSEEK_API_KEY"),

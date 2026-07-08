@@ -32,8 +32,8 @@ load_env_file()
 # 1. Load the Skill dynamically
 SKILL_PATH = "finance/wallet_screening"
 skill_bundle = SkillLoader.load_skill(SKILL_PATH)
-WalletScreeningSkill = getattr(skill_bundle["module"], "WalletScreeningSkill")
-wallet_skill = WalletScreeningSkill()
+wallet_skill = skill_bundle["class"]()
+# Or: WalletScreeningSkill = getattr(skill_bundle["module"], "WalletScreeningSkill"); wallet_skill = WalletScreeningSkill()
 
 print(f"Loaded Skill: {skill_bundle['manifest']['name']}")
 

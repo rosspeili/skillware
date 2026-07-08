@@ -83,7 +83,8 @@ from skillware.core.loader import SkillLoader
 load_env_file()
 
 bundle = SkillLoader.load_skill("compliance/tos_evaluator")
-skill = bundle["module"].TOSEvaluatorSkill()
+skill = bundle["class"]()
+# Or: skill = bundle["module"].TOSEvaluatorSkill()
 
 deepseek_tool = SkillLoader.to_deepseek_tool(bundle)
 tool_name = deepseek_tool["function"]["name"]

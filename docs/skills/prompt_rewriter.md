@@ -26,6 +26,9 @@ This is critical for complex agents facing strict token constraints or high LLM 
 
 Guides: [Usage index](../usage/README.md) · [Agent loops](../usage/agent_loops.md). No skill-specific API keys.
 
+
+Use `bundle["class"]()` in the snippets below; explicit `bundle["module"].ClassName()` also works.
+
 Sample user message: *Compress this prompt before the main model call: "Hello, could you please make sure to read this documentation..."*
 
 ### Runnable examples
@@ -38,7 +41,7 @@ See [examples/README.md](../../examples/README.md) for the current runnable-scri
 from skillware.core.loader import SkillLoader
 
 bundle = SkillLoader.load_skill("optimization/prompt_rewriter")
-rewriter = bundle["module"].PromptRewriter()
+rewriter = bundle["class"]()
 result = rewriter.execute({
     "raw_text": "Hello, could you please make sure to read this documentation...",
     "compression_aggression": "high",
@@ -57,7 +60,7 @@ from skillware.core.loader import SkillLoader
 
 load_env_file()
 bundle = SkillLoader.load_skill("optimization/prompt_rewriter")
-skill = bundle["module"].PromptRewriter()
+skill = bundle["class"]()
 client = genai.Client()
 tool = SkillLoader.to_gemini_tool(bundle)
 response = client.models.generate_content(
@@ -100,7 +103,7 @@ from skillware.core.loader import SkillLoader
 
 load_env_file()
 bundle = SkillLoader.load_skill("optimization/prompt_rewriter")
-skill = bundle["module"].PromptRewriter()
+skill = bundle["class"]()
 client = anthropic.Anthropic(api_key=os.environ.get("ANTHROPIC_API_KEY"))
 tools = [SkillLoader.to_claude_tool(bundle)]
 # On tool_use (name optimization/prompt_rewriter): skill.execute(tool_use.input)
@@ -116,7 +119,7 @@ from skillware.core.loader import SkillLoader
 
 load_env_file()
 bundle = SkillLoader.load_skill("optimization/prompt_rewriter")
-skill = bundle["module"].PromptRewriter()
+skill = bundle["class"]()
 openai_tool = SkillLoader.to_openai_tool(bundle)
 client = OpenAI(api_key=os.environ.get("OPENAI_API_KEY"))
 # Match tool_call.function.name to openai_tool["function"]["name"] (optimization_prompt_rewriter)
@@ -132,7 +135,7 @@ from skillware.core.loader import SkillLoader
 
 load_env_file()
 bundle = SkillLoader.load_skill("optimization/prompt_rewriter")
-skill = bundle["module"].PromptRewriter()
+skill = bundle["class"]()
 deepseek_tool = SkillLoader.to_deepseek_tool(bundle)
 client = OpenAI(
     api_key=os.environ.get("DEEPSEEK_API_KEY"),
