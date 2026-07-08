@@ -5,6 +5,24 @@ skills installed locally. It mirrors the same path resolution order used by
 `SkillLoader.load_skill()`, so the skills listed are exactly the ones your
 agent can load.
 
+## Splash
+
+The interactive CLI opens with a gradient-styled **SKILLWARE** ASCII logo, a
+version tagline, and footer links. The block art (from `skillware/cli.py`):
+
+```text
+  ███████╗██╗  ██╗██╗██╗     ██╗     ██╗    ██╗ █████╗ ██████╗ ███████╗
+  ██╔════╝██║ ██╔╝██║██║     ██║     ██║    ██║██╔══██╗██╔══██╗██╔════╝
+  ███████╗█████╔╝ ██║██║     ██║     ██║ █╗ ██║███████║██████╔╝█████╗
+  ╚════██║██╔═██╗ ██║██║     ██║     ██║███╗██║██╔══██║██╔══██╗██╔══╝
+  ███████║██║  ██╗██║███████╗███████╗╚███╔███╔╝██║  ██║██║  ██║███████╗
+  ╚══════╝╚═╝  ╚═╝╚═╝╚══════╝╚══════╝ ╚══╝╚══╝ ╚═╝  ╚═╝╚═╝  ╚═╝╚══════╝
+```
+
+Tagline: `Skillware v{version} — Skill Management Framework`. Gradient colors
+are listed under [Color theme](#color-theme). See [Interactive menu](#interactive-menu)
+for a terminal screenshot.
+
 ## Installation
 
 Install Skillware — `rich` is included as a core dependency:
@@ -69,6 +87,8 @@ Running `skillware` with no arguments launches an ASCII splash screen and an
 interactive numbered menu:
 
     skillware
+
+![Skillware interactive menu — splash and skillware list output](../../assets/skillware%20list.png)
 
 The splash shows a gradient-styled **SKILLWARE** ASCII logo, a tagline in the
 form `Skillware v{version} — Skill Management Framework` (same version string
