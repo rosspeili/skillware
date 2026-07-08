@@ -11,6 +11,7 @@ Contributors add user-facing entries under `[Unreleased]` in the same PR. Mainta
 ### Added
 
 - **`finance/uk_companies_house_handler`**: New skill for UK Companies House REST API — deterministic company search, profile, officers, PSC, filing history, and intent-to-operation mapping with UK corporate terminology translation; bundled endpoint index and terminology map; status-based response envelope (ready/needs_input/error) with disambiguation support.
+- **Documentation**: Add minimal Mermaid architecture flow diagrams to README, introduction, and agent loops; add cross-links and direct-path footnotes (#210).
 
 ### Changed
 
