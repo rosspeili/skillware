@@ -10,6 +10,7 @@ Contributors add user-facing entries under `[Unreleased]` in the same PR. Mainta
 
 ### Changed
 
+- **CLI**: Interactive splash — correct SKILLWARE ASCII logo, Rich 3-stop gradient on logo and tagline (`#D4E4F1` → `#79B6D8` → `#EBD8DC`), shared `_package_version_str()` for splash and `--version`, tagline `Skillware v{version} — Skill Management Framework` (#222).
 - **Documentation**: Compact architecture Mermaid diagrams — shorter README labels, model-agnostic adapter nodes in introduction, horizontal agent-loop layout with role table (#210 follow-up).
 
 ## [0.4.1] - 2026-07-08

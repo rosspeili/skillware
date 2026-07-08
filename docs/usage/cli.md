@@ -70,7 +70,9 @@ interactive numbered menu:
 
     skillware
 
-The splash displays the current version and links to the project site and
+The splash shows a gradient-styled **SKILLWARE** ASCII logo, a tagline in the
+form `Skillware v{version} — Skill Management Framework` (same version string
+as `skillware --version`), and dim footer links to the project site and
 repository. The menu accepts both number input (`1`) and command name (`list`).
 After each command completes, the menu re-prints automatically. Press `q` or
 `Ctrl+C` to exit.
@@ -207,7 +209,8 @@ The CLI uses a pastel color palette consistent with the project's visual identit
 | Table headers and borders | Lavender | `#C7CEEA` |
 | Category column | Peach | `#FFDAC1` |
 | Skill ID column | Mint | `#B5EAD7` |
-| Splash screen | Lavender | `#C7CEEA` |
+| Splash logo and tagline | Gradient (ice → sky → blush) | `#D4E4F1` → `#79B6D8` → `#EBD8DC` |
+| Splash footer links | Lavender | `#C7CEEA` |
 | Interactive menu | Peach | `#FFDAC1` |
 
 ## short_description field
