@@ -8,11 +8,13 @@ Contributors add user-facing entries under `[Unreleased]` in the same PR. Mainta
 
 ## [Unreleased]
 
+## [0.4.2] - 2026-07-08
+
 ### Changed
 
-- **Documentation**: Docs sweep — README Mermaid Registry alignment; `vision.md` pinned to v0.4.x; skill catalog and usage guides prefer `bundle["class"]()` with explicit `bundle["module"].ClassName()` noted as still supported.
 - **CLI**: Interactive splash — correct SKILLWARE ASCII logo, Rich 3-stop gradient on logo and tagline (`#D4E4F1` → `#79B6D8` → `#EBD8DC`), shared `_package_version_str()` for splash and `--version`, tagline `Skillware v{version} — Skill Management Framework` (#222).
-- **Documentation**: Compact architecture Mermaid diagrams — shorter README labels, model-agnostic adapter nodes in introduction, horizontal agent-loop layout with role table (#210 follow-up).
+- **Documentation**: Compact architecture Mermaid diagrams — shorter README labels, model-agnostic adapter nodes in introduction, horizontal agent-loop layout with role table (#210 follow-up, #221).
+- **Documentation**: Docs sweep — README Mermaid Registry alignment; `vision.md` pinned to v0.4.x; skill catalog and usage guides prefer `bundle["class"]()` with explicit `bundle["module"].ClassName()` noted as still supported (#225).
 
 ## [0.4.1] - 2026-07-08
 
