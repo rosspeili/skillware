@@ -56,7 +56,7 @@
     },
     {
         "name": "help wanted",
-        "color": "D2FFAE",
+        "color": "C7E4CA",
         "description": "Extra attention is needed."
     },
     {
@@ -81,7 +81,7 @@
     },
     {
         "name": "wontfix",
-        "color": "F4ECC8",
+        "color": "F0EFEB",
         "description": "This will not be worked on."
     }
 ]
