@@ -1,0 +1,59 @@
+name: "Skill Upgrade"
+description: Propose an enhancement to an existing registry skill (not a new skill).
+title: "[Skill Upgrade]: "
+labels: ["skill upgrade", "enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Use this for **existing** skills under `skills/<category>/<name>/` — new actions, data updates, manifest version bumps, test expansion.
+
+        For a **new** registry skill, use **New Skill Proposal** instead.
+
+  - type: input
+    id: skill_id
+    attributes:
+      label: Skill ID
+      description: Full registry ID
+      placeholder: finance/wallet_screening
+    validations:
+      required: true
+
+  - type: input
+    id: current_version
+    attributes:
+      label: Current manifest version
+      placeholder: "1.0.0"
+    validations:
+      required: false
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Proposed change
+      description: What should improve and why?
+    validations:
+      required: true
+
+  - type: dropdown
+    id: breaking
+    attributes:
+      label: Breaking change?
+      options:
+        - "No — backward compatible"
+        - "Yes — describe migration in the issue body"
+        - Unsure
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: checklist
+    attributes:
+      label: Likely touch points
+      options:
+        - label: manifest.yaml version bump
+        - label: skill.py logic
+        - label: instructions.md
+        - label: test_skill.py
+        - label: docs/skills/<name>.md and catalog row
+        - label: examples/*.py or examples/README.md

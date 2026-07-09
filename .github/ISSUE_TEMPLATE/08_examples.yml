@@ -1,0 +1,61 @@
+name: "Examples"
+description: Runnable scripts, agent loops, or examples index under examples/.
+title: "[Examples]: "
+labels: ["examples"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Scope: `examples/*.py`, [examples/README.md](https://github.com/ARPAHLS/skillware/blob/main/examples/README.md), and provider agent-loop patterns.
+
+        For prose-only doc fixes, use **Documentation Fix**. For loader/adapter behavior, use **Framework Feature** or **Bug Report**.
+
+  - type: input
+    id: scripts
+    attributes:
+      label: Script path(s)
+      placeholder: examples/gemini_wallet_check.py
+    validations:
+      required: true
+
+  - type: input
+    id: skill_id
+    attributes:
+      label: Skill ID (if applicable)
+      placeholder: finance/wallet_screening
+    validations:
+      required: false
+
+  - type: dropdown
+    id: provider
+    attributes:
+      label: Provider / pattern
+      options:
+        - Gemini
+        - Claude
+        - OpenAI
+        - DeepSeek
+        - Ollama
+        - Local execute (no LLM loop)
+        - Multi-skill harness
+        - Other
+    validations:
+      required: true
+
+  - type: textarea
+    id: description
+    attributes:
+      label: What needs to change?
+      description: e.g. manifest-derived tool dispatch, new runnable script, index row update
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: updates
+    attributes:
+      label: Related updates needed
+      options:
+        - label: examples/README.md index row
+        - label: docs/usage/agent_loops.md reference matrix
+        - label: docs/skills/<name>.md Usage Examples
+        - label: CHANGELOG [Unreleased]

@@ -1,52 +1,87 @@
 [
     {
         "name": "bug",
-        "color": "FFB7B2",
+        "color": "FFBCBC",
         "description": "Something isn't working."
     },
     {
-        "name": "documentation",
-        "color": "97C1A9",
-        "description": "Improvements or additions to documentation."
+        "name": "security",
+        "color": "CCCCF0",
+        "description": "Security vulnerabilities, trust model, or constitution updates."
+    },
+    {
+        "name": "packaging",
+        "color": "DBD3DC",
+        "description": "PyPI wheel, pyproject.toml, MANIFEST.in, or install extras."
+    },
+    {
+        "name": "ci",
+        "color": "DBD3DC",
+        "description": "GitHub Actions workflows and CI configuration."
+    },
+    {
+        "name": "testing",
+        "color": "DBD3DC",
+        "description": "pytest, doc-drift guards, or CI test coverage."
+    },
+    {
+        "name": "skill request",
+        "color": "D4E4F1",
+        "description": "Request for a new capability to be added to the registry."
+    },
+    {
+        "name": "core-framework",
+        "color": "79B6D8",
+        "description": "Changes to loader, env, base classes, or model adapters."
+    },
+    {
+        "name": "cli",
+        "color": "79B6D8",
+        "description": "skillware CLI, interactive menu, or docs/usage/cli.md."
     },
     {
         "name": "enhancement",
-        "color": "C7CEEA",
+        "color": "D4E4F1",
         "description": "New feature or request."
     },
     {
+        "name": "skill upgrade",
+        "color": "D4E4F1",
+        "description": "Enhance an existing registry skill (not a new skill)."
+    },
+    {
         "name": "good first issue",
-        "color": "E0BBE4",
+        "color": "D2FFAE",
         "description": "Good for newcomers."
     },
     {
         "name": "help wanted",
-        "color": "957DAD",
+        "color": "D2FFAE",
         "description": "Extra attention is needed."
     },
     {
-        "name": "skill request",
-        "color": "B5EAD7",
-        "description": "Request for a new capability to be added."
+        "name": "documentation",
+        "color": "F4ECC8",
+        "description": "Improvements or additions to documentation."
     },
     {
-        "name": "core-framework",
-        "color": "FFDAC1",
-        "description": "Changes to loader, env, or base classes."
+        "name": "examples",
+        "color": "FADFD0",
+        "description": "Runnable scripts under examples/, agent loops, or examples index."
     },
     {
-        "name": "security",
-        "color": "FFFFD1",
-        "description": "Security vulnerabilities or constitution updates."
+        "name": "discussion",
+        "color": "F4ECC8",
+        "description": "Open discussion for RFCs and design proposals."
     },
     {
         "name": "question",
-        "color": "FF9AA2",
+        "color": "F4ECC8",
         "description": "Further information is requested."
     },
     {
         "name": "wontfix",
-        "color": "D3D3D3",
+        "color": "F4ECC8",
         "description": "This will not be worked on."
     }
 ]

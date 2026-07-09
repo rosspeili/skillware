@@ -6,24 +6,28 @@ body:
   - type: markdown
     attributes:
       value: |
-        Thanks for reporting an issue!
+        Thanks for reporting an issue! Search [open bugs](https://github.com/ARPAHLS/skillware/issues?q=is%3Aopen+label%3Abug) first.
 
   - type: dropdown
     id: component
     attributes:
       label: Affected Component
       options:
-        - "Core Framework (Loader/Env)"
-        - "Specific Skill (e.g. Wallet Screening)"
-        - "Documentation"
-        - "Examples"
+        - Core Framework (loader, env, base_skill, adapters)
+        - CLI (skillware list, test, examples, menu)
+        - Specific Skill
+        - Examples / agent loops
+        - Documentation
+        - Packaging / PyPI install
+        - Tests / CI
+        - Security
     validations:
       required: true
 
   - type: input
     id: skill_name
     attributes:
-      label: Skill Name (if applicable)
+      label: Skill ID (if applicable)
       placeholder: finance/wallet_screening
     validations:
       required: false
@@ -44,10 +48,9 @@ body:
       label: Steps to Reproduce
       description: How do we trigger this bug?
       placeholder: |
-        1. Loaded skill 'X'
-        2. Configured Gemini model
-        3. Sent prompt "..."
-        4. Crash
+        1. Loaded skill 'finance/wallet_screening'
+        2. Ran examples/gemini_wallet_check.py
+        3. Crash on first generate_content call
     validations:
       required: true
 
@@ -55,17 +58,20 @@ body:
     id: logs
     attributes:
       label: Error Logs
-      description: Paste the traceback or error message.
-      render: python
+      description: Paste the traceback or error message (optional for Documentation bugs).
+      render: shell
     validations:
-      required: true
+      required: false
 
   - type: textarea
     id: environment
     attributes:
       label: Environment
-      description: OS, Python version, SDK versions.
+      description: OS, Python version, install method (pip vs editable clone), SDK versions.
       placeholder: |
         Windows 11
         Python 3.12
+        pip install skillware[gemini]==0.4.2
         google-genai 1.0.0
+    validations:
+      required: false

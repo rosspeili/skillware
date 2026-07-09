@@ -8,6 +8,10 @@ Contributors add user-facing entries under `[Unreleased]` in the same PR. Mainta
 
 ## [Unreleased]
 
+### Changed
+
+- **GitHub**: Overhauled issue templates (CLI, Skill Upgrade, Examples, Packaging), issue chooser `config.yml`, PR template, and label taxonomy with pastel colors; labels sync automatically from `.github/labels.json` via CI on merge to `main` (#227).
+
 ## [0.4.2] - 2026-07-08
 
 ### Changed
