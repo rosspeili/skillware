@@ -1,5 +1,5 @@
 name: "New Skill Proposal"
-description: Propose a new capability for the Skillware registry.
+description: Propose a new capability for the Skillware registry (not an upgrade to an existing skill).
 title: "[New Skill]: "
 labels: ["skill request", "enhancement"]
 body:
@@ -7,14 +7,35 @@ body:
     attributes:
       value: |
         Thanks for helping expand the Skillware ecosystem!
-        Please review the [Contribution Guidelines](https://github.com/ARPAHLS/skillware/blob/main/CONTRIBUTING.md) first.
+        Please review the [Contribution Guidelines](https://github.com/ARPAHLS/skillware/blob/main/CONTRIBUTING.md) and start from [templates/python_skill/](https://github.com/ARPAHLS/skillware/tree/main/templates/python_skill).
+
+        To improve an **existing** skill, use the **Skill Upgrade** template instead.
 
   - type: input
     id: skill_name
     attributes:
-      label: Skill Name
-      description: e.g. `finance/stock_checker` or `os/file_manager`
-      placeholder: category/skill_name
+      label: Skill ID
+      description: Full registry ID in `category/skill_name` form
+      placeholder: finance/stock_checker
+    validations:
+      required: true
+
+  - type: dropdown
+    id: category
+    attributes:
+      label: Category
+      description: Pick an existing category or propose a new one in the description
+      options:
+        - compliance
+        - data_engineering
+        - defi
+        - dev_tools
+        - finance
+        - monitoring
+        - office
+        - optimization
+        - wellness
+        - "Propose new category (describe below)"
     validations:
       required: true
 
@@ -39,15 +60,27 @@ body:
       required: true
 
   - type: dropdown
-    id: models
+    id: runtime
     attributes:
-      label: Targeted Models (if applicable)
-      description: Is this skill specific to a model or truly agnostic?
+      label: Target runtime
+      description: Which LLM runtimes must the skill support?
       options:
-        - "Model Agnostic (All)"
-        - "Gemini 2.0"
-        - "Claude 3.5"
-        - "Local LLaMA"
-        - "Other"
+        - Model agnostic (all supported adapters)
+        - Gemini
+        - Claude
+        - OpenAI
+        - DeepSeek
+        - Ollama (prompt mode)
+        - Other / mixed
     validations:
       required: true
+
+  - type: textarea
+    id: env_vars
+    attributes:
+      label: External APIs & env vars (if any)
+      description: List API keys or data sources the skill needs
+      placeholder: |
+        ETHERSCAN_API_KEY — optional chain enrichment
+    validations:
+      required: false

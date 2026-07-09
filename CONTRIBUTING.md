@@ -28,12 +28,16 @@ Pick the path that matches your issue. Only the **skill** row requires the full 
 
 | Type | What you change | Typical issue label | Before coding | Verify locally |
 | :--- | :--- | :--- | :--- | :--- |
-| **New or updated skill** | `skills/<category>/<name>/`, `docs/skills/`, templates | Skill proposal, enhancement | Skill proposal or approved issue | Bundle test + `pytest tests/test_skill_issuer.py` (see [TESTING.md](docs/TESTING.md)) |
-| **Documentation** | `docs/`, `README.md`, `CONTRIBUTING.md` | Documentation, good first issue | Doc issue or typo/fix issue | Links valid; tone consistent |
-| **Core framework** | `skillware/core/`, `tests/` | Framework feature | Framework feature issue | `pytest tests/`; update usage docs if API changes |
-| **Bug fix** | Paths named in issue | Bug report | Reproduction or failing test | Targeted test + full `pytest tests/` when touching shared code |
-| **Good first issue** | Usually docs, tests, or small fixes | Good first issue | Read acceptance criteria literally | Checklist for underlying type above |
-| **RFC / large change** | Architecture, manifest contract, loader | RFC | Maintainer discussion on issue | Per RFC scope |
+| **New skill** | `skills/<category>/<name>/`, `docs/skills/`, templates | `skill request`, `enhancement` | New Skill Proposal or approved issue | Bundle test + `pytest tests/test_skill_issuer.py` (see [TESTING.md](docs/TESTING.md)) |
+| **Skill upgrade** | Existing bundle under `skills/` | `skill upgrade`, `enhancement` | Skill Upgrade issue | Bundle test + catalog/docs as needed |
+| **Documentation** | `docs/`, `README.md`, `CONTRIBUTING.md` | `documentation` | Documentation Fix issue | Links valid; tone consistent |
+| **Core framework** | `skillware/core/`, framework `tests/` | `core-framework`, `enhancement` | Framework Feature issue | `pytest tests/`; update usage docs if API changes |
+| **CLI** | `skillware/cli.py`, `docs/usage/cli.md` | `cli` | CLI issue | `pytest tests/test_cli.py` when relevant |
+| **Examples** | `examples/*.py`, agent loops, examples index | `examples` | Examples issue | Script runs; `pytest tests/test_registry_docs.py` when index changes |
+| **Packaging** | `pyproject.toml`, `MANIFEST.in`, wheel | `packaging` | Packaging issue | Build/install smoke per issue |
+| **Bug fix** | Paths named in issue | `bug` | Bug Report | Reproduction or failing test |
+| **Good first issue** | Usually docs, tests, or small fixes | `good first issue` | Read acceptance criteria literally | Checklist for underlying type above |
+| **RFC / large change** | Architecture, manifest contract | `discussion`, `core-framework` | RFC issue | Per RFC scope |
 
 **Skills remain the primary contribution we expect**, but every type above should follow [Getting started](#getting-started), [Universal expectations](#universal-expectations), and [Pull request process](#pull-request-process).
 
@@ -47,10 +51,17 @@ Check [existing issues](https://github.com/ARPAHLS/skillware/issues) before star
 
 | Intent | Issue template |
 | :--- | :--- |
-| New capability in the registry | [Skill proposal](https://github.com/ARPAHLS/skillware/issues/new/choose) |
-| Loader, adapters, `base_skill` | [Framework feature](https://github.com/ARPAHLS/skillware/issues/new/choose) |
-| Incorrect behavior | [Bug report](https://github.com/ARPAHLS/skillware/issues/new/choose) |
+| New capability in the registry | [New Skill Proposal](https://github.com/ARPAHLS/skillware/issues/new/choose) |
+| Upgrade an existing skill | [Skill Upgrade](https://github.com/ARPAHLS/skillware/issues/new/choose) |
+| Loader, adapters, `base_skill` | [Framework Feature](https://github.com/ARPAHLS/skillware/issues/new/choose) |
+| CLI (`list`, `test`, `examples`, menu) | [CLI](https://github.com/ARPAHLS/skillware/issues/new/choose) |
+| Runnable examples / agent loops | [Examples](https://github.com/ARPAHLS/skillware/issues/new/choose) |
+| PyPI wheel / install packaging | [Packaging](https://github.com/ARPAHLS/skillware/issues/new/choose) |
+| Docs only | [Documentation Fix](https://github.com/ARPAHLS/skillware/issues/new/choose) |
+| Incorrect behavior | [Bug Report](https://github.com/ARPAHLS/skillware/issues/new/choose) |
 | Large or breaking design | [RFC](https://github.com/ARPAHLS/skillware/issues/new/choose) |
+
+Issue chooser links: [CONTRIBUTING](CONTRIBUTING.md), [good first issues](https://github.com/ARPAHLS/skillware/issues?q=is%3Aopen+label%3A%22good+first+issue%22), [Skill Library](docs/skills/README.md). Labels are defined in [`.github/labels.json`](.github/labels.json) and synced automatically on merge to `main` (see [sync-labels workflow](.github/workflows/sync-labels.yml)).
 
 Wait for maintainer feedback on non-trivial work before investing in a large PR.
 
@@ -374,6 +385,8 @@ Skill IDs follow `category/skill_name` and should match the path under `skills/`
 | [docs/skills/README.md](docs/skills/README.md) | Published skill catalog |
 | [templates/python_skill/](templates/python_skill/) | Boilerplate for new skills |
 | [Pull request template](.github/PULL_REQUEST_TEMPLATE.md) | PR checklist |
+| [Issue templates](.github/ISSUE_TEMPLATE/) | Bug, docs, skills, CLI, examples, RFC chooser |
+| [`.github/labels.json`](.github/labels.json) | Label names, colors, descriptions (synced via CI) |
 | [CHANGELOG.md](CHANGELOG.md) | Release history; contributors add under `[Unreleased]` |
 | [Security policy](SECURITY.md) | Reporting vulnerabilities |
 

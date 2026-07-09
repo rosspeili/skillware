@@ -6,10 +6,11 @@ body:
   - type: markdown
     attributes:
       value: |
-        An RFC (Request for Comments) is for proposals that are too big for a simple feature request.
-        Use this to discuss:
-        - Changing core standards (e.g. how `manifest.yaml` works)
-        - Major refactors
+        An RFC is for proposals too large for a simple feature request, for example:
+
+        - Changing core standards (how `manifest.yaml` works)
+        - Major refactors or manifest contract changes
+        - Packaging strategy, trust model, or sandbox architecture
         - Adding support for entirely new platforms
 
   - type: textarea

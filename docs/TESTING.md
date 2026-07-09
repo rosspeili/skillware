@@ -16,8 +16,11 @@ Tests fall into four layers: **bundle**, **framework**, **maintainer**, and **ex
 | `[all]` extra covers bundle-test runtime deps | Done |
 | CLI `skillware test` for bundle discovery | Done |
 | Doc-drift guards (`test_registry_docs.py`) | Done |
+| GitHub label policy test (`test_github_labels.py`) | Done |
 
 Every pull request runs `black --check`, `flake8`, `pytest skills/`, and `pytest tests/`. Bundle tests gate merge the same as framework and maintainer tests.
+
+When [`.github/labels.json`](../../.github/labels.json) changes on `main`, the [Sync GitHub Labels](../../.github/workflows/sync-labels.yml) workflow updates label colors and descriptions on the repository automatically — do not edit labels manually in the GitHub UI.
 
 ## Quick Setup
 
@@ -146,6 +149,8 @@ python -m pytest tests/
 ```
 
 That covers **skill bundle tests** under `skills/` and **framework + maintainer tests** under `tests/`. It does not run `examples/`. Do not add per-skill pip lines or hardcoded skill paths to `.github/workflows/ci.yml`.
+
+Pushes to `main` that touch `.github/labels.json` also run [`.github/workflows/sync-labels.yml`](../../.github/workflows/sync-labels.yml) to upsert GitHub labels from the JSON file.
 
 The `[all]` extra includes optional SDK groups plus registry skill runtime deps (`web3`, `fastembed`, `numpy`, …) so `pytest skills/` works after `pip install -e ".[dev,all]"`. When a skill adds new `manifest.yaml` `requirements`, add the same packages to the matching optional extra and to `[all]` in `pyproject.toml`.
 

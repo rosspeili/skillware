@@ -1,18 +1,38 @@
 name: "Documentation Fix"
 description: Help us improve the docs.
 title: "[Docs]: "
-labels: ["documentation", "good first issue"]
+labels: ["documentation"]
 body:
+  - type: markdown
+    attributes:
+      value: |
+        For runnable script or agent-loop fixes under `examples/`, prefer the **Examples** template.
+
+  - type: dropdown
+    id: doc_type
+    attributes:
+      label: Type of fix
+      options:
+        - Typo or clarity
+        - Broken link
+        - Outdated API or CLI behavior
+        - Doc drift (catalog, examples index, agent loops)
+        - Other
+    validations:
+      required: true
+
   - type: textarea
     id: description
     attributes:
       label: What needs to be fixed?
-      description: Typos, unclear instructions, or broken links?
+      description: Describe the problem and the expected correction.
     validations:
       required: true
 
   - type: input
     id: page
     attributes:
-      label: Affected Page
-      placeholder: docs/usage/gemini.md
+      label: Affected Page(s)
+      placeholder: docs/usage/cli.md
+    validations:
+      required: true

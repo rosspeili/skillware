@@ -1,0 +1,37 @@
+name: "Packaging"
+description: PyPI wheel, install extras, or MANIFEST.in changes.
+title: "[Packaging]: "
+labels: ["packaging", "core-framework"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Scope: `pyproject.toml`, `MANIFEST.in`, wheel/sdist contents, PyPI extras, install smoke tests.
+
+        For runtime loader logic, use **Framework Feature**. For CI workflow changes only, label with `ci` when opening.
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Description
+      description: What packaging behavior should change?
+    validations:
+      required: true
+
+  - type: textarea
+    id: rationale
+    attributes:
+      label: Rationale
+      description: Who is affected (pip users, editable installs, CI)?
+    validations:
+      required: true
+
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: Acceptance criteria
+      placeholder: |
+        - pip install skillware includes ...
+        - wheel smoke test passes
+    validations:
+      required: false

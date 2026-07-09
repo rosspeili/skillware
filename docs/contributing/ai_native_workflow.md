@@ -29,7 +29,7 @@ This document is written **for you**, the contributing agent. Read it before you
 
 ## How you should operate
 
-1. **Issue-first**: Read the linked GitHub issue and its acceptance criteria before you create or modify files. If there is no issue, tell your operator to open one or confirm scope with maintainers.
+1. **Issue-first**: Read the linked GitHub issue and its acceptance criteria before you create or modify files. If there is no issue, tell your operator to open one via the [issue chooser](https://github.com/ARPAHLS/skillware/issues/new/choose) (New Skill, Skill Upgrade, CLI, Examples, Framework Feature, Bug Report, Documentation Fix, RFC). Labels are defined in [`.github/labels.json`](../../.github/labels.json).
 2. **Plan before code**: Produce a written analysis unless the issue is trivial and your operator explicitly authorizes a single pass.
 3. **Scope discipline**: Change only what the issue requires. Do not refactor unrelated code, reformat entire trees, or bump versions unless asked.
 4. **Determinism**: Skill logic is ordinary Python with predictable outputs. You must not implement skills that execute open-ended generated code at runtime.
@@ -90,7 +90,10 @@ You must:
 
 | If the issue involves... | You must also inspect |
 | :--- | :--- |
-| New or updated skill | `skills/<category>/<name>/`, `docs/skills/<name>.md`, `docs/skills/README.md`, `templates/python_skill/`, `tests/test_skill_issuer.py`, and when documenting integration: `docs/usage/README.md`, [agent_loops.md](../usage/agent_loops.md), [skill_usage_template.md](../usage/skill_usage_template.md), matching `examples/*.py` if present, and a row in `examples/README.md` if a runnable script is added or renamed. Doc-drift guards in `tests/test_registry_docs.py` verify that `docs/skills/README.md`, `examples/README.md`, and `docs/usage/agent_loops.md` stay in sync with manifests and scripts on disk — these run automatically via `pytest tests/`. |
+| New skill | `skills/<category>/<name>/`, `docs/skills/<name>.md`, `docs/skills/README.md`, `templates/python_skill/`, `tests/test_skill_issuer.py`, and when documenting integration: `docs/usage/README.md`, [agent_loops.md](../usage/agent_loops.md), [skill_usage_template.md](../usage/skill_usage_template.md), matching `examples/*.py` if present, and a row in `examples/README.md` if a runnable script is added or renamed. Doc-drift guards in `tests/test_registry_docs.py` verify that `docs/skills/README.md`, `examples/README.md`, and `docs/usage/agent_loops.md` stay in sync with manifests and scripts on disk — these run automatically via `pytest tests/`. |
+| Skill upgrade | Same paths as new skill, but only the existing skill ID from the issue; bump `manifest.yaml` version when behavior or schema changes |
+| CLI | `skillware/cli.py`, `docs/usage/cli.md`, `tests/test_cli.py` |
+| Examples | `examples/*.py`, `examples/README.md`, `docs/usage/agent_loops.md`; run `pytest tests/test_registry_docs.py` when the index or matrix changes |
 | Core framework | `skillware/core/`, `tests/test_loader.py`, `docs/usage/` |
 | Documentation only | `docs/`, `README.md`, `CONTRIBUTING.md`, inbound links; `examples/README.md` when the issue adds, renames, or removes runnable scripts under `examples/`; for skill catalog or provider integration work, also `docs/usage/` and `docs/skills/`. Run `pytest tests/test_registry_docs.py` to confirm catalog and examples docs still match manifests and scripts on disk. |
 | Release / user-visible change | Root [CHANGELOG.md](../../CHANGELOG.md) under `[Unreleased]` when behavior, CLI, skills, or user-facing docs change (maintainers cut version sections) |
@@ -365,6 +368,7 @@ Run this internal dialogue before you hand off to your operator.
 - [API keys for skills](../usage/api_keys.md) — env setup (link from skill pages; do not duplicate)
 - [Agent Code of Conduct](../../CODE_OF_CONDUCT.md)
 - [Pull request template](../../.github/PULL_REQUEST_TEMPLATE.md)
+- [Issue templates](../../.github/ISSUE_TEMPLATE/) and [labels.json](../../.github/labels.json)
 - [Skill library](../skills/README.md)
 
 ---
