@@ -15,7 +15,7 @@ REQUIRED_LABELS = {
     "help wanted",
     "skill request",
     "skill upgrade",
-    "core-framework",
+    "core framework",
     "cli",
     "examples",
     "testing",
@@ -58,7 +58,7 @@ def test_label_entries_well_formed():
 
 
 def test_rfc_template_labels_exist():
-    """Issue template 05_rfc.yml references discussion and core-framework."""
+    """Issue template 05_rfc.yml references discussion and core framework."""
     names = {entry["name"] for entry in _load_labels()}
     assert "discussion" in names
-    assert "core-framework" in names
+    assert "core framework" in names

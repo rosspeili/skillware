@@ -1,7 +1,7 @@
 name: "Request for Comments (RFC)"
 description: Start a discussion for a major architectural change or new standard.
 title: "[RFC]: "
-labels: ["discussion", "core-framework"]
+labels: ["discussion", "core framework"]
 body:
   - type: markdown
     attributes:

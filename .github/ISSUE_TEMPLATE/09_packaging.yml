@@ -1,7 +1,7 @@
 name: "Packaging"
 description: PyPI wheel, install extras, or MANIFEST.in changes.
 title: "[Packaging]: "
-labels: ["packaging", "core-framework"]
+labels: ["packaging", "core framework"]
 body:
   - type: markdown
     attributes:

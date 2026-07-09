@@ -14,6 +14,8 @@ from typing import Any
 
 LABELS_FILE = Path(__file__).resolve().parent.parent / "labels.json"
 API_ROOT = "https://api.github.com"
+# Labels removed from labels.json — deleted on sync so GitHub UI does not keep stale pills.
+DEPRECATED_LABELS = ["core-framework"]
 
 
 def _request(
@@ -110,9 +112,19 @@ def sync_labels(dry_run: bool = False) -> int:
         else:
             unchanged += 1
 
+    deleted = 0
+    for name in DEPRECATED_LABELS:
+        encoded = urllib.parse.quote(name, safe="")
+        url = f"{API_ROOT}/repos/{repo}/labels/{encoded}"
+        if _request("GET", url, token) is not None:
+            _request("DELETE", url, token)
+            print(f"DELETE {name} (deprecated)")
+            deleted += 1
+
     print(
         f"Label sync complete: {created} created, {updated} updated, "
-        f"{unchanged} unchanged ({len(labels)} defined in labels.json)."
+        f"{unchanged} unchanged, {deleted} deleted "
+        f"({len(labels)} defined in labels.json)."
     )
     return 0
 

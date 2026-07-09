@@ -31,13 +31,13 @@ Pick the path that matches your issue. Only the **skill** row requires the full 
 | **New skill** | `skills/<category>/<name>/`, `docs/skills/`, templates | `skill request`, `enhancement` | New Skill Proposal or approved issue | Bundle test + `pytest tests/test_skill_issuer.py` (see [TESTING.md](docs/TESTING.md)) |
 | **Skill upgrade** | Existing bundle under `skills/` | `skill upgrade`, `enhancement` | Skill Upgrade issue | Bundle test + catalog/docs as needed |
 | **Documentation** | `docs/`, `README.md`, `CONTRIBUTING.md` | `documentation` | Documentation Fix issue | Links valid; tone consistent |
-| **Core framework** | `skillware/core/`, framework `tests/` | `core-framework`, `enhancement` | Framework Feature issue | `pytest tests/`; update usage docs if API changes |
+| **Core framework** | `skillware/core/`, framework `tests/` | `core framework`, `enhancement` | Framework Feature issue | `pytest tests/`; update usage docs if API changes |
 | **CLI** | `skillware/cli.py`, `docs/usage/cli.md` | `cli` | CLI issue | `pytest tests/test_cli.py` when relevant |
 | **Examples** | `examples/*.py`, agent loops, examples index | `examples` | Examples issue | Script runs; `pytest tests/test_registry_docs.py` when index changes |
 | **Packaging** | `pyproject.toml`, `MANIFEST.in`, wheel | `packaging` | Packaging issue | Build/install smoke per issue |
 | **Bug fix** | Paths named in issue | `bug` | Bug Report | Reproduction or failing test |
 | **Good first issue** | Usually docs, tests, or small fixes | `good first issue` | Read acceptance criteria literally | Checklist for underlying type above |
-| **RFC / large change** | Architecture, manifest contract | `discussion`, `core-framework` | RFC issue | Per RFC scope |
+| **RFC / large change** | Architecture, manifest contract | `discussion`, `core framework` | RFC issue | Per RFC scope |
 
 **Skills remain the primary contribution we expect**, but every type above should follow [Getting started](#getting-started), [Universal expectations](#universal-expectations), and [Pull request process](#pull-request-process).
 

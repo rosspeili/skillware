@@ -30,7 +30,7 @@
         "description": "Request for a new capability to be added to the registry."
     },
     {
-        "name": "core-framework",
+        "name": "core framework",
         "color": "79B6D8",
         "description": "Changes to loader, env, base classes, or model adapters."
     },

@@ -1,7 +1,7 @@
 name: "Framework Feature"
 description: Propose a change to the core Skillware engine (loader, env, adapters).
 title: "[Feat]: "
-labels: ["enhancement", "core-framework"]
+labels: ["enhancement", "core framework"]
 body:
   - type: markdown
     attributes:
