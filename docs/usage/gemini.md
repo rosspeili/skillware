@@ -69,7 +69,7 @@ Gemini uses `FunctionDeclaration` objects (defined in Protobuf) to describe tool
 The `manifest.yaml` uses standard JSON Schema types (lowercase `string`, `object`).
 Gemini requires Protobuf types (uppercase `STRING`, `OBJECT`).
 
-`SkillLoader.to_gemini_tool()` handles this conversion automatically. It recursively walks your parameter schema and ensures it is compatible with Gemini's backend.
+`SkillLoader.to_gemini_tool()` handles this conversion automatically. It recursively walks your parameter schema, sanitizes the tool name, and returns a ready-to-use `types.Tool` object compatible with Gemini's backend.
 
 ### 2. Context Injection
 Gemini 1.5+ supports `system_instruction`. Skillware leverages this to inject the "Mind" of the skill (`instructions.md`).
@@ -80,6 +80,8 @@ This is crucial. Without `system_instruction`, the model knows it *has* a tool, 
 The `google-genai` SDK returns model parts that can include `function_call` requests.
 In a manual Skillware loop, execute the matching local skill with `skill.execute(dict(part.function_call.args))`, then send a `function_response` back to Gemini so the model can produce the final answer.
 If you use an automatic-calling helper in your own app, keep the same boundary: Skillware executes locally, and the tool result is returned to the model before you show a final response.
+
+**Canonical Dispatch**: When matching the requested `function_call.name` against your skill in a multi-tool agent loop, always match against the sanitized name (e.g. `SkillLoader._sanitize_gemini_tool_name(bundle["manifest"]["name"])` or the adapter-derived `tool.function_declarations[0].name`), not the raw registry ID with slashes.
 
 ## 🛠️ Advanced: Manual Execution Loop
 

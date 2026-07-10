@@ -316,7 +316,7 @@ def test_to_ollama_prompt():
 def test_to_gemini_tool():
     dummy_bundle = {
         "manifest": {
-            "name": "test_gemini_skill",
+            "name": "finance/wallet_screening",
             "parameters": {
                 "type": "object",
                 "properties": {"param1": {"type": "string"}},
@@ -324,10 +324,25 @@ def test_to_gemini_tool():
         }
     }
     tool = SkillLoader.to_gemini_tool(dummy_bundle)
-    assert tool["name"] == "test_gemini_skill"
+    decl = tool.function_declarations[0]
+    assert decl.name == "finance_wallet_screening"
+    assert type(tool).__name__ == "Tool"
     # Gemini requires UPPERCASE types for Protobufs
-    assert tool["parameters"]["type"] == "OBJECT"
-    assert tool["parameters"]["properties"]["param1"]["type"] == "STRING"
+    assert decl.parameters.type.name == "OBJECT"
+    assert decl.parameters.properties["param1"].type.name == "STRING"
+
+
+def test_sanitize_gemini_tool_name():
+    assert (
+        SkillLoader._sanitize_gemini_tool_name("compliance/tos_evaluator")
+        == "compliance_tos_evaluator"
+    )
+    assert (
+        SkillLoader._sanitize_gemini_tool_name("wallet_screening") == "wallet_screening"
+    )
+    assert SkillLoader._sanitize_gemini_tool_name("") == "unknown_tool"
+    assert SkillLoader._sanitize_gemini_tool_name("a" * 80).startswith("a")
+    assert len(SkillLoader._sanitize_gemini_tool_name("a" * 80)) == 64
 
 
 def test_to_claude_tool():
