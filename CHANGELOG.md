@@ -8,6 +8,8 @@ Contributors add user-facing entries under `[Unreleased]` in the same PR. Mainta
 
 ## [Unreleased]
 
+## [0.4.3] - 2026-07-10
+
 ### Added
 
 - **Framework:** Added `_sanitize_gemini_tool_name()` to `skillware/core/loader.py` to explicitly map provider tool naming constraints.
