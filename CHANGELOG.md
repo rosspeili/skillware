@@ -10,6 +10,7 @@ Contributors add user-facing entries under `[Unreleased]` in the same PR. Mainta
 
 ### Added
 
+- Added `creative/bg_remover`, an offline background removal skill powered by rembg (#196).
 - **Packaging:** Category, per-skill, and `[all]` optional extras generated from skill manifests via `scripts/sync_extras.py`; hand-maintained `dev`, SDK extras, and meta `[agents]` (#236).
 - **Documentation:** [Install extras](docs/usage/install_extras.md) — canonical guide for `pip install skillware[...]` targets (#236).
 - **Framework:** `skillware/core/extras.py` and richer `ImportError` hints from `SkillLoader` when manifest requirements are missing (#236).
@@ -22,6 +23,7 @@ Contributors add user-facing entries under `[Unreleased]` in the same PR. Mainta
 
 ### Changed
 
+- **Framework:** Map manifest requirement `pillow` to import name `PIL` in `SkillLoader` dependency checks (#196).
 - **Packaging (breaking):** Removed legacy extras `cli`, `embeddings`; `[all]` is skill runtime deps only (not SDK packages). Use `[agents]` for Gemini + Claude + OpenAI SDK deps (#236).
 - **CLI:** `skillware list` prints a pointer to the install extras guide (#236).
 - **Documentation:** README, CONTRIBUTING, TESTING, skill catalog pages, and examples index updated for the new extra taxonomy; every skill doc recommends its per-skill extra (#236).

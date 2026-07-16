@@ -343,6 +343,7 @@ Place each skill under one top-level directory under `skills/`. Use an existing 
 
 | Category | Purpose | Examples in registry |
 | :--- | :--- | :--- |
+| `creative` | Image processing, media editing, and creative utilities | `bg_remover` |
 | `compliance` | Privacy, policy, regulatory guardrails | `pii_masker`, `mica_module`, `tos_evaluator` |
 | `data_engineering` | Datasets, generation, ETL-style tooling | `synthetic_generator`, `novelty_extractor` |
 | `defi` | On-chain trading and agent wallet execution | `evm_tx_handler` |

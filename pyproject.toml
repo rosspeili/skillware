@@ -59,6 +59,12 @@ compliance = [
     "google-genai",
 ]
 
+creative = [
+    "onnxruntime",
+    "pillow",
+    "rembg>=2.0.0",
+]
+
 data_engineering = [
     "fastembed",
     "numpy",
@@ -92,6 +98,12 @@ compliance_mica_module = [
 compliance_pii_masker = []
 
 compliance_tos_evaluator = []
+
+creative_bg_remover = [
+    "rembg>=2.0.0",
+    "pillow",
+    "onnxruntime",
+]
 
 data_engineering_novelty_extractor = [
     "fastembed",
@@ -128,7 +140,10 @@ all = [
     "fastembed",
     "google-genai",
     "numpy",
+    "onnxruntime",
+    "pillow",
     "pymupdf",
+    "rembg>=2.0.0",
     "web3>=6.0.0",
 ]
 

@@ -11,6 +11,13 @@ Skills for document processing, email automation, and productivity.
 | :--- | :--- | :--- | :--- |
 | **[PDF Form Filler](pdf_form_filler.md)** | `office/pdf_form_filler` | [@rosspeili](https://github.com/rosspeili) ([@ARPAHLS](https://github.com/ARPAHLS)) | Fills AcroForm-based PDFs by mapping user instructions to detected form fields using LLM-based semantic understanding. |
 
+## Creative
+Skills for image processing, media editing, and creative utilities.
+
+| Skill | ID | Issuer | Description |
+| :--- | :--- | :--- | :--- |
+| **[Background Remover](bg_remover.md)** | `creative/bg_remover` | [@AyushSrivastava1818](https://github.com/AyushSrivastava1818) | Removes image backgrounds locally using rembg and returns transparent PNGs. |
+
 ## Finance
 Tools for financial analysis, blockchain interaction, and regulatory compliance.
 
@@ -76,8 +83,6 @@ Supportive coaching guardrails, crisis triage, and grounded psychoeducation for 
 ## Installing Skills
 
 Registry skills live under `skills/<category>/<skill_name>/` in the repository and in the PyPI package. After `pip install skillware`, load by ID from your project (`./skills/...`), via `SKILLWARE_SKILL_PATH`, or from the bundled registry copy under `site-packages/skills/`. See [Usage guides](../usage/README.md#finding-skills-on-disk).
-
-Optional **runtime packages** install via [pip extras](../usage/install_extras.md). **Always use the per-skill extra** in docs and installs (`pip install "skillware[category_skill]"`), even when it is empty today. Category extras and `[all]` remain available for broader installs. The base wheel includes every skill bundle on disk without optional runtime packages.
 
 ```python
 from skillware.core.loader import SkillLoader
