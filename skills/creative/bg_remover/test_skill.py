@@ -167,3 +167,43 @@ def test_output_path(skill, tmp_path):
     assert result["success"] is True
     assert output_file.exists()
     assert result["output_path"] == str(output_file)
+
+
+def test_image_precedence_over_input_path(skill, tmp_path, monkeypatch):
+    """When both image and input_path are sent, base64 image wins."""
+
+    path_file = tmp_path / "path.png"
+    Image.new("RGB", (32, 32), "blue").save(path_file)
+
+    seen = {}
+
+    def fake_remove(image_bytes, *args, **kwargs):
+        seen["size"] = len(image_bytes)
+        img = Image.new("RGBA", (100, 100), (255, 0, 0, 0))
+        buffer = io.BytesIO()
+        img.save(buffer, format="PNG")
+        return buffer.getvalue()
+
+    fake_module = types.SimpleNamespace(
+        remove=fake_remove,
+        new_session=lambda *args, **kwargs: object(),
+    )
+    monkeypatch.setitem(sys.modules, "rembg", fake_module)
+
+    b64 = create_image()
+    result = skill.execute(
+        {
+            "image": b64,
+            "input_path": str(path_file),
+        }
+    )
+
+    assert result["success"] is True
+    assert seen["size"] == len(base64.b64decode(b64))
+
+
+def test_custom_model(skill):
+    result = skill.execute({"image": create_image(), "model": "u2net"})
+
+    assert result["success"] is True
+    assert result["model_used"] == "u2net"
