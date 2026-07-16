@@ -8,6 +8,8 @@ Contributors add user-facing entries under `[Unreleased]` in the same PR. Mainta
 
 ## [Unreleased]
 
+## [0.4.5] - 2026-07-16
+
 ### Added
 
 - Added `creative/bg_remover`, an offline background removal skill powered by rembg (#196).
