@@ -69,6 +69,7 @@ Union of non-core `requirements` from every skill in the category.
 | Extra | Skills | Packages installed |
 | :--- | :--- | :--- |
 | `compliance` | `compliance/mica_module`, `compliance/pii_masker`, `compliance/tos_evaluator` | `google-genai` |
+| `creative` | `creative/bg_remover` | `rembg`, `pillow`, `onnxruntime` |
 | `data_engineering` | `data_engineering/novelty_extractor`, `data_engineering/synthetic_generator` | `fastembed`, `numpy` |
 | `defi` | `defi/evm_tx_handler` | `web3>=6.0.0` |
 | `dev_tools` | `dev_tools/issue_resolver` | *(none today)* |
@@ -82,7 +83,7 @@ Union of non-core `requirements` from every skill in the category.
 pip install "skillware[defi]"
 ```
 
-When a new category or skill lands (for example a future `creative` category), run `python scripts/sync_extras.py` after merging the skill manifest — category and skill rows appear in `pyproject.toml` automatically.
+When a new category or skill lands, run `python scripts/sync_extras.py` after merging the skill manifest — category and skill rows appear in `pyproject.toml` automatically. Update this guide's tables when adding a category or skill with new packages.
 
 ## Skill extras
 
@@ -93,6 +94,7 @@ One extra per bundled registry skill. Naming: `{category}_{skill_name}` (registr
 | `compliance_mica_module` | `compliance/mica_module` | `google-genai` | |
 | `compliance_pii_masker` | `compliance/pii_masker` | *(none today)* | Use this extra in docs and installs |
 | `compliance_tos_evaluator` | `compliance/tos_evaluator` | *(none today)* | Use this extra in docs and installs |
+| `creative_bg_remover` | `creative/bg_remover` | `rembg`, `pillow`, `onnxruntime` | |
 | `data_engineering_novelty_extractor` | `data_engineering/novelty_extractor` | `fastembed`, `numpy` | |
 | `data_engineering_synthetic_generator` | `data_engineering/synthetic_generator` | *(none today)* | Use this extra in docs and installs |
 | `defi_evm_tx_handler` | `defi/evm_tx_handler` | `web3>=6.0.0` | |
@@ -114,7 +116,7 @@ Empty extras (`[]`) are intentional — always use the per-skill extra in docume
 
 | Extra | Purpose | Packages |
 | :--- | :--- | :--- |
-| `all` | Deduped union of **all** bundled skill runtime deps (non-core) | `anthropic`, `fastembed`, `google-genai`, `numpy`, `pymupdf`, `web3>=6.0.0` |
+| `all` | Deduped union of **all** bundled skill runtime deps (non-core) | `anthropic`, `fastembed`, `google-genai`, `numpy`, `onnxruntime`, `pillow`, `pymupdf`, `rembg`, `web3>=6.0.0` |
 | `agents` | Union of all agent SDK extras | `google-genai`, `anthropic`, `openai` |
 | `dev` | Clone-repo lint and test tools | `pytest`, `pytest-mock`, `flake8`, `black` |
 

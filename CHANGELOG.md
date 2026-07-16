@@ -10,6 +10,7 @@ Contributors add user-facing entries under `[Unreleased]` in the same PR. Mainta
 
 ### Added
 
+- Added `creative/bg_remover`, an offline background removal skill powered by rembg (#196).
 - **Packaging:** Category, per-skill, and `[all]` optional extras generated from skill manifests via `scripts/sync_extras.py`; hand-maintained `dev`, SDK extras, and meta `[agents]` (#236).
 - **Documentation:** [Install extras](docs/usage/install_extras.md) — canonical guide for `pip install skillware[...]` targets (#236).
 - **Framework:** `skillware/core/extras.py` and richer `ImportError` hints from `SkillLoader` when manifest requirements are missing (#236).
