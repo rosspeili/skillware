@@ -6,7 +6,7 @@
 **Recommended install:** `pip install "skillware[finance_uk_companies_house_handler]"`. See [Install extras](../usage/install_extras.md).
 [Skill Library](README.md) · [Testing](../TESTING.md)
 
-A deterministic UK Companies House API handler for agents. Provides structured operations for company search, profile lookup, officer and PSC listing, filing history, and intent-to-operation mapping with UK corporate terminology translation. Returns status-based responses (`ready`, `needs_input`, `error`) with disambiguation support.
+A deterministic UK Companies House API handler for agents. Provides structured operations for company search, profile lookup, officer and PSC listing, filing history, and intent-to-operation mapping with UK corporate terminology translation. Returns status-based responses (`ready`, `partial`, `needs_input`, `error`) with disambiguation support.
 
 ## Capabilities
 
@@ -16,6 +16,7 @@ A deterministic UK Companies House API handler for agents. Provides structured o
 - **Persons with Significant Control (PSC)**: List beneficial owners with natures of control, equivalent to the US concept of "beneficial owner" or "shareholder".
 - **Filing History**: List filings (accounts, confirmation statements, incorporations) with optional category filtering and document metadata links.
 - **Intent Mapping**: Translate common user intent keywords (CEO, owner, shareholder) to the correct UK Companies House actions and build suggested action pipelines.
+- **State Tracking (Context)**: Automatically carries forward session state (like `company_number`, `company_name`, and active filters) between sequential tool calls to seamlessly link multi-step operations.
 
 ## Internal Architecture
 
@@ -31,7 +32,8 @@ The system prompt teaches the AI to:
 ### 2. The Body (`skill.py`)
 A single `execute()` entry point dispatches to six action handlers:
 - **HTTP layer**: Authenticated requests using API key as HTTP Basic username.
-- **Status envelope**: Every response includes `status` (ready/needs_input/error), `fetched_at` (UTC ISO), and `source`.
+- **Status envelope**: Every response includes `status` (ready/partial/needs_input/error), `fetched_at` (UTC ISO), and `source`.
+- **State propagation**: Extracts and updates a strict 5-key `context` schema in every response, falling back to these values if omitted in subsequent requests.
 - **Error handling**: Catches HTTP errors (404, 429, 500), timeouts, and connection failures.
 
 ### 3. The Knowledge (`data/`)
@@ -203,6 +205,13 @@ Prompt mode via `SkillLoader.to_ollama_prompt(bundle)`; match `"tool": "finance/
       "company_status": "dissolved"
     }
   ],
+  "context": {
+    "company_number": null,
+    "company_name": null,
+    "last_action": "resolve_company",
+    "officer_filter": null,
+    "selected_transaction_id": null
+  },
   "agent_hint": "Ask the user which company they mean before calling get_officers.",
   "next_actions": ["get_company_profile", "get_officers"],
   "fetched_at": "2026-07-05T00:00:00+00:00"
@@ -215,7 +224,14 @@ Prompt mode via `SkillLoader.to_ollama_prompt(bundle)`; match `"tool": "finance/
 {
   "action": "get_officers",
   "company_number": "00102498",
-  "active_only": true
+  "active_only": true,
+  "context": {
+    "company_number": "00102498",
+    "company_name": "BP P.L.C.",
+    "last_action": "resolve_company",
+    "officer_filter": null,
+    "selected_transaction_id": null
+  }
 }
 ```
 
@@ -225,6 +241,13 @@ Prompt mode via `SkillLoader.to_ollama_prompt(bundle)`; match `"tool": "finance/
 {
   "status": "ready",
   "company_number": "00102498",
+  "context": {
+    "company_number": "00102498",
+    "company_name": "BP P.L.C.",
+    "last_action": "get_officers",
+    "officer_filter": null,
+    "selected_transaction_id": null
+  },
   "officers": [
     {
       "name": "SMITH, John",

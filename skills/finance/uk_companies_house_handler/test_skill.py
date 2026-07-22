@@ -33,6 +33,7 @@ def test_manifest_consistency(skill, manifest):
     skill_manifest = skill.manifest
     assert skill_manifest["name"] == manifest["name"]
     assert skill_manifest["version"] == manifest["version"]
+    assert "context" in skill_manifest["parameters"]["properties"]
 
 
 def test_missing_api_key():
@@ -308,6 +309,77 @@ def test_get_officers_active_only(mock_request, skill):
     assert result["officers"][0]["name"] == "SMITH, John"
 
 
+@patch("skills.finance.uk_companies_house_handler.skill.requests.request")
+def test_get_officers_context_only_company_number(mock_request, skill):
+    """get_officers works with company_number provided only via context."""
+    mock_response = MagicMock()
+    mock_response.json.return_value = {
+        "items": [
+            {
+                "name": "SMITH, John",
+                "officer_role": "director",
+                "appointed_on": "2020-03-01",
+                "nationality": "British",
+            }
+        ],
+        "total_results": 1,
+        "active_count": 1,
+    }
+    mock_response.raise_for_status = MagicMock()
+    mock_request.return_value = mock_response
+
+    result = skill.execute(
+        {
+            "action": "get_officers",
+            "context": {"company_number": "00102498"},
+        }
+    )
+
+    assert result["status"] == "ready"
+    assert result["company_number"] == "00102498"
+    assert len(result["officers"]) == 1
+    assert result["officers"][0]["name"] == "SMITH, John"
+
+
+@patch("skills.finance.uk_companies_house_handler.skill.requests.request")
+def test_get_officers_company_name_fallback_via_profile(mock_request, skill):
+    """Officers action falls back to profile fetch if company_name is missing."""
+    mock_officers_response = MagicMock()
+    mock_officers_response.json.return_value = {
+        "items": [
+            {
+                "name": "SMITH, John",
+                "officer_role": "director",
+                "appointed_on": "2020-03-01",
+            }
+        ],
+        "total_results": 1,
+        "active_count": 1,
+    }
+    mock_officers_response.raise_for_status = MagicMock()
+
+    mock_profile_response = MagicMock()
+    mock_profile_response.json.return_value = {
+        "company_name": "PROFILE FALLBACK LTD",
+        "company_status": "active",
+        "type": "ltd",
+    }
+    mock_profile_response.raise_for_status = MagicMock()
+
+    mock_request.side_effect = [mock_officers_response, mock_profile_response]
+
+    result = skill.execute(
+        {
+            "action": "get_officers",
+            "company_number": "00102498",
+        }
+    )
+
+    assert result["status"] == "ready"
+    assert result["company_name"] == "PROFILE FALLBACK LTD"
+    assert mock_request.call_count == 2
+
+
 # --- get_pscs Tests ---
 
 
@@ -526,3 +598,53 @@ def test_connection_error(mock_request, skill):
 
     assert result["status"] == "error"
     assert result["error_code"] == "connection_error"
+
+
+# --- v2a Enhancements Tests ---
+
+
+@patch("skills.finance.uk_companies_house_handler.skill.requests.request")
+def test_context_propagation(mock_request, skill):
+    """Context should carry forward and supply missing parameters."""
+    mock_response = MagicMock()
+    mock_response.json.return_value = {
+        "company_name": "TEST COMPANY LTD",
+        "company_status": "active",
+        "type": "ltd",
+    }
+    mock_response.raise_for_status = MagicMock()
+    mock_request.return_value = mock_response
+
+    result = skill.execute(
+        {
+            "action": "get_company_profile",
+            "context": {
+                "company_number": "12345678",
+                "officer_filter": "Smith",
+            },
+        }
+    )
+
+    assert result["status"] == "ready"
+    assert "context" in result
+    ctx = result["context"]
+    assert ctx["last_action"] == "get_company_profile"
+    assert ctx["company_number"] == "12345678"
+    assert ctx["company_name"] == "TEST COMPANY LTD"
+    assert ctx["officer_filter"] == "Smith"
+
+
+def test_partial_response(skill):
+    """_partial_response should build the correct envelope."""
+    result = skill._partial_response(
+        data={"some_key": "some_val"},
+        next_actions=["do_something_else"],
+        context={"state": 1},
+        pipeline={"completed_steps": 1, "total_steps": 2},
+    )
+    assert result["status"] == "partial"
+    assert result["some_key"] == "some_val"
+    assert result["next_actions"] == ["do_something_else"]
+    assert result["context"] == {"state": 1}
+    assert result["pipeline"] == {"completed_steps": 1, "total_steps": 2}
+    assert "fetched_at" in result
