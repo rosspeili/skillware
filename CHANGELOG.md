@@ -8,6 +8,8 @@ Contributors add user-facing entries under `[Unreleased]` in the same PR. Mainta
 
 ## [Unreleased]
 
+## [0.4.6] - 2026-07-23
+
 ### Added
 
 - **Documentation:** OpenAI-compatible host guide and runnable Groq example covering shared `to_openai_tool()` usage, provider base URLs, credentials, and local servers (#261).
